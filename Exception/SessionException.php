@@ -11,15 +11,8 @@
 
 declare(strict_types=1);
 
-namespace Doyo\Behat\Coverage\Bridge\CodeCoverage\Session;
+namespace Doyo\Behat\Coverage\Bridge\CodeCoverage\Exception;
 
-class LocalSession extends Session
+class SessionException extends \Exception
 {
-    public static function create($name)
-    {
-        $self = new static($name);
-        register_shutdown_function([$self, 'shutdown']);
-
-        return $self;
-    }
 }
