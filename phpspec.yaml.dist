@@ -4,11 +4,11 @@ suites:
         namespace: Doyo\Bridge\CodeCoverage
         psr4_prefix: Doyo\Bridge\CodeCoverage
 
-#extensions:
-#    Doyo\PhpSpec\CodeCoverage\Extension:
-#        filters:
-#            whitelist:
-#                - src
-#        reports:
-#            php: build/cov/phpspec.cov
-#            html: build/phpspec
+extensions:
+    Doyo\PhpSpec\CodeCoverage\Extension:
+        filters:
+            whitelist:
+                - src
+        reports:
+            php: build/cov/phpspec.cov
+            html: build/phpspec

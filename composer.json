@@ -27,6 +27,9 @@
             "spec\\Doyo\\Bridge\\CodeCoverage\\": "spec/"
         }
     },
+    "replace": {
+        "doyo/code-coverage-bridge": "self.version"
+    },
     "require": {
         "php": ">=7.0",
         "phpunit/php-code-coverage": "^5.3 | ^6.0"
@@ -34,6 +37,8 @@
     "require-dev": {
         "phpspec/phpspec": "^4.3 | ^5.0",
         "symfony/http-foundation": "^3.4 | ^4.3",
-        "symfony/cache": "^3.4"
+        "symfony/cache": "^3.4",
+        "doyo/phpspec-code-coverage": "^0.2.0",
+        "phpunit/phpcov": "^4.0 | ^5.0"
     }
 }
