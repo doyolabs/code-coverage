@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Doyo\Behat\Coverage\Bridge\CodeCoverage\Session;
+namespace Doyo\Bridge\CodeCoverage\Session;
 
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\Driver\Dummy;
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\Processor;
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\TestCase;
+use Doyo\Bridge\CodeCoverage\Driver\Dummy;
+use Doyo\Bridge\CodeCoverage\Processor;
+use Doyo\Bridge\CodeCoverage\TestCase;
 use SebastianBergmann\CodeCoverage\Filter;
 
 class RemoteSession extends Session

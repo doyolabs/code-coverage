@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Doyo\Behat\Coverage\Bridge\CodeCoverage\Controller;
+namespace Doyo\Bridge\CodeCoverage\Controller;
 
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\Session\RemoteSession;
+use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

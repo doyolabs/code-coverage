@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Doyo\Behat\Coverage\Bridge\CodeCoverage\Driver\Compat;
+namespace Doyo\Bridge\CodeCoverage\Driver\Compat;
 
 use Doyo\Behat\Coverage\Event\CoverageEvent;
 use SebastianBergmann\CodeCoverage\Driver\Driver;

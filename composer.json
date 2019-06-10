@@ -19,11 +19,21 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Doyo\\Behat\\Coverage\\Bridge\\CodeCoverage\\": ""
+            "Doyo\\Bridge\\CodeCoverage\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\Doyo\\Bridge\\CodeCoverage\\": "spec/"
         }
     },
     "require": {
         "php": ">=7.0",
         "phpunit/php-code-coverage": "^5.3 | ^6.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^4.3 | ^5.0",
+        "symfony/http-foundation": "^3.4 | ^4.3",
+        "symfony/cache": "^3.4"
     }
 }

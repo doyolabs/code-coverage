@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Doyo\Behat\Coverage\Bridge\CodeCoverage\Session;
+namespace Doyo\Bridge\CodeCoverage\Session;
 
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\Exception\SessionException;
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\Processor;
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\ProcessorInterface;
-use Doyo\Behat\Coverage\Bridge\CodeCoverage\TestCase;
+use Doyo\Bridge\CodeCoverage\Exception\SessionException;
+use Doyo\Bridge\CodeCoverage\Processor;
+use Doyo\Bridge\CodeCoverage\ProcessorInterface;
+use Doyo\Bridge\CodeCoverage\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 

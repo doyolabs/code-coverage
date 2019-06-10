@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Doyo\Behat\Coverage\Bridge\CodeCoverage;
+namespace Doyo\Bridge\CodeCoverage;
 
 class TestCase
 {
