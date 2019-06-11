@@ -31,7 +31,7 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
      *
      * @var array
      */
-    protected $defaultOptions;
+    protected $defaultOptions = [];
 
     public function __construct(array $options = array())
     {
