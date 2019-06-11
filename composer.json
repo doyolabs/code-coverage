@@ -11,6 +11,7 @@
     ],
     "extra": {
         "branch-alias": {
+            "dev-develop": "2.0-dev",
             "dev-master": "1.0-dev"
         }
     },
@@ -41,7 +42,7 @@
         "symfony/http-foundation": "^3.4 | ^4.3",
         "symfony/cache": "^3.4",
         "phpunit/phpcov": "^4.0 | ^5.0",
-        "doyo/phpspec-code-coverage": "~1.0@dev",
+        "doyo/phpspec-code-coverage": "^1.0",
         "phpunit/phpunit": ">=6.0",
         "symfony/console": "^3.4 | ^4.3"
     }
