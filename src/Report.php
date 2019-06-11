@@ -47,17 +47,7 @@ class Report implements EventSubscriberInterface
         $processor = $event->getProcessor();
 
         foreach($this->processors as $reportProcessor){
-            try{
-                $reportProcessor->process($processor);
-                $info = sprintf(
-                    'generated <comment>%s</comment> to: %s',
-                    $reportProcessor->getType(),
-                    $reportProcessor->getTarget()
-                );
-                $consoleIO->coverageInfo($info);
-            }catch (\Exception $exception){
-                $consoleIO->coverageError($exception->getMessage());
-            }
+            $reportProcessor->process($processor, $consoleIO);
         }
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Doyo\Bridge\CodeCoverage\Report;
 
+use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReportProcessor;
+
 class Html extends AbstractReportProcessor
 {
     protected function getProcessorClass()
     {
-        // TODO: Implement getProcessorClass() method.
+        return HtmlReportProcessor::class;
     }
 }

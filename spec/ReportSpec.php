@@ -60,27 +60,11 @@ class ReportSpec extends ObjectBehavior
         $reportSuccess->getType()->willReturn('report-success');
         $reportSuccess->getTarget()->willReturn('target');
         $reportSuccess
-            ->process($processor)
-            ->shouldBeCalledOnce()
-        ;
-
-        $reportFail->getType()->willReturn('report-fail');
-        $reportFail
-            ->process($processor)
-            ->shouldBeCalledOnce()
-            ->willThrow(new ReportException('some-error'))
-        ;
-
-        $consoleIO
-            ->coverageInfo(Argument::containingString('report-success'))
-            ->shouldBeCalledOnce();
-        $consoleIO
-            ->coverageError(Argument::containingString('some-error'))
+            ->process($processor, $consoleIO)
             ->shouldBeCalledOnce()
         ;
 
         $this->addProcessor($reportSuccess);
-        $this->addProcessor($reportFail);
         $this->generate($coverageEvent);
     }
 }
