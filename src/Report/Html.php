@@ -6,7 +6,17 @@ use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReportProcessor;
 
 class Html extends AbstractReportProcessor
 {
-    protected function getProcessorClass()
+    public function getType(): string
+    {
+        return 'html';
+    }
+
+    public function getOutputType(): string
+    {
+        return static::OUTPUT_DIR;
+    }
+
+    public function getProcessorClass(): string
     {
         return HtmlReportProcessor::class;
     }

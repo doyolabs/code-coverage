@@ -26,6 +26,7 @@ class AbstractReportProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
+        $this->beConstructedWith($this->defaultOptions);
         $this->shouldHaveType(AbstractReportProcessor::class);
     }
 
@@ -33,9 +34,7 @@ class AbstractReportProcessorSpec extends ObjectBehavior
     {
         $options = $this->defaultOptions;
         $this->beConstructedWith($options);
-        $this->getType()->shouldReturn($options['type']);
         $this->getTarget()->shouldReturn($options['target']);
-        $this->getFileSystemType()->shouldReturn($options['fileSystemType']);
 
         $this->getProcessor()->getFoo()->shouldReturn('Foo Bar');
         $this->getProcessor()->getHello()->shouldReturn('Hello World');

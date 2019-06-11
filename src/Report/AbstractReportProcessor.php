@@ -10,6 +10,10 @@ use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 
 abstract class AbstractReportProcessor implements ReportProcessorInterface
 {
+    const OUTPUT_FILE = 'file';
+    const OUTPUT_DIR = 'dir';
+    const OUTPUT_CONSOLE = 'console';
+
     protected $processor;
 
     /**
@@ -20,15 +24,19 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
     /**
      * @var string
      */
-    protected $type;
+    protected $fileSystemType;
 
     /**
-     * @var string
+     * A default options for this report processor
+     *
+     * @var array
      */
-    protected $fileSystemType;
+    protected $defaultOptions;
 
     public function __construct(array $options = array())
     {
+        $options = array_merge($this->defaultOptions, $options);
+
         foreach($options as $name => $value){
             $method = 'set'.ucfirst($name);
             if(method_exists($this,$method)){
@@ -36,18 +44,18 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
                 call_user_func_array([$this,$method],[$value]);
             }
         }
+
         $this->processor = $this->createProcessor($options);
     }
 
-    abstract protected function getProcessorClass();
+    abstract public function getProcessorClass(): string;
 
     /**
+     * Get the output type of this report
+     *
      * @return string
      */
-    public function getFileSystemType(): string
-    {
-        return $this->fileSystemType;
-    }
+    abstract public function getOutputType(): string;
 
     /**
      * @param string $target
@@ -55,27 +63,6 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
     public function setTarget(string $target)
     {
         $this->target = $target;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @param string $fileSystemType
-     */
-    public function setFileSystemType(string $fileSystemType)
-    {
-        $this->fileSystemType = $fileSystemType;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     public function getTarget(): string
@@ -122,8 +109,11 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
         $r = new \ReflectionClass($this->getProcessorClass());
         $args = [];
 
-        $constructorParams = $r->getConstructor()->getParameters();
-        if(!is_null($constructorParams)){
+        $constructor= $r->getConstructor();
+        if(
+            !is_null($constructor)
+            && is_array($constructorParams = $constructor->getParameters())
+        ){
             foreach($constructorParams as $parameter){
                 if(!$parameter->isDefaultValueAvailable()){
                     break;
@@ -135,6 +125,17 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
                 }
                 $args[] = $value;
             }
+        }
+
+        $outputType = $this->getOutputType();
+        $dir = $this->getTarget();
+
+        if(static::OUTPUT_FILE === $outputType){
+            $dir = dirname($dir);
+        }
+
+        if(static::OUTPUT_CONSOLE !== $outputType && !is_dir($dir)){
+            mkdir($dir, 0775, true);
         }
 
         return $r->newInstanceArgs($args);

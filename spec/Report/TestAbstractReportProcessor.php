@@ -13,7 +13,17 @@ class TestAbstractReportProcessor extends AbstractReportProcessor
         $this->processor = $processor;
     }
 
-    protected function getProcessorClass()
+    public function getOutputType(): string
+    {
+        return static::OUTPUT_FILE;
+    }
+
+    public function getType(): string
+    {
+        return 'test';
+    }
+
+    public function getProcessorClass(): string
     {
         return TestReportProcessor::class;
     }

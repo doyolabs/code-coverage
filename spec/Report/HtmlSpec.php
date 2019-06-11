@@ -42,7 +42,6 @@ class HtmlSpec extends ObjectBehavior
     function it_should_be_create_processor_properly()
     {
         $this->getType()->shouldReturn('html');
-        $this->getFileSystemType()->shouldReturn('dir');
         $this->getTarget()->shouldReturn($this->tempDir);
     }
 }

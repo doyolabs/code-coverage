@@ -3,11 +3,9 @@
 namespace spec\Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
-use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\Report;
-use Doyo\Bridge\CodeCoverage\Exception\ReportException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
