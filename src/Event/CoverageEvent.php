@@ -6,7 +6,6 @@ namespace Doyo\Bridge\CodeCoverage\Event;
 
 use Doyo\Bridge\CodeCoverage\Environment\RuntimeInterface;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
-use Doyo\Bridge\CodeCoverage\TestCase;
 use Doyo\Symfony\Bridge\EventDispatcher\Event;
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 
@@ -14,6 +13,7 @@ use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
  * Class CoverageEvent
  *
  * @method bool canCollectCodeCoverage()
+ * @method string getDriverClass()
  */
 class CoverageEvent extends Event
 {
@@ -22,6 +22,7 @@ class CoverageEvent extends Event
     const start = 'start';
     const stop = 'stop';
     const complete = 'complete';
+    const report = 'report';
 
     /**
      * @var ProcessorInterface

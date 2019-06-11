@@ -77,9 +77,7 @@ class CodeCoverageSpec extends ObjectBehavior
     )
     {
         $processor->complete()->shouldBeCalledOnce();
-
         $subscriber->complete(Argument::cetera())->shouldBeCalledOnce();
-
         $this->complete()->shouldHaveType(CoverageEvent::class);
     }
 }
