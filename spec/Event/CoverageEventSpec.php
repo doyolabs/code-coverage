@@ -2,6 +2,7 @@
 
 namespace spec\Doyo\Bridge\CodeCoverage\Event;
 
+use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
@@ -12,10 +13,11 @@ class CoverageEventSpec extends ObjectBehavior
 {
     function let(
         ProcessorInterface $processor,
+        ConsoleIO $consoleIO,
         TestCase $testCase
     )
     {
-        $this->beConstructedWith($processor, $testCase);
+        $this->beConstructedWith($processor, $consoleIO, $testCase);
     }
 
     function it_is_initializable()
@@ -25,10 +27,12 @@ class CoverageEventSpec extends ObjectBehavior
 
     function its_properties_should_be_mutable(
         ProcessorInterface $processor,
-        TestCase $testCase
+        TestCase $testCase,
+        ConsoleIO $consoleIO
     )
     {
         $this->getProcessor()->shouldReturn($processor);
         $this->getTestCase()->shouldReturn($testCase);
+        $this->getConsoleIO()->shouldReturn($consoleIO);
     }
 }

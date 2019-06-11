@@ -36,7 +36,6 @@ class RoboFile extends Tasks
             'src',
             'tests',
             'spec',
-            'features',
         ];
 
         $this->taskWatch()
