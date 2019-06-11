@@ -17,6 +17,7 @@ class TestSubscriber implements EventSubscriberInterface
     final public static function getSubscribedEvents()
     {
         return [
+            CoverageEvent::refresh => 'refresh',
             CoverageEvent::beforeStart => 'beforeStart',
             CoverageEvent::start => 'start',
             CoverageEvent::stop => 'stop',
@@ -26,7 +27,11 @@ class TestSubscriber implements EventSubscriberInterface
 
     public function beforeStart(CoverageEvent $event)
     {
+    }
 
+    public function refresh(CoverageEvent $event)
+    {
+        $this->coverageEvent = $event;
     }
 
     public function start(CoverageEvent $event)
