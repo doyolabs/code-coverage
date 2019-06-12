@@ -83,7 +83,7 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
             $reportProcessor = $this->processor;
             $reportProcessor->process($processor->getCodeCoverage(), $this->target);
             $info = sprintf(
-                'generated <comment>%s</comment> to: %s',
+                '<info>generated <comment>%s</comment> to: <comment>%s</comment></info>',
                 $this->getType(),
                 $this->getTarget()
             );
@@ -94,7 +94,7 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
                 $this->getType(),
                 $exception->getMessage()
             );
-            $consoleIO->coverageError($message);
+            $consoleIO->coverageInfo($message);
         }
     }
 

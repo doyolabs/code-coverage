@@ -46,6 +46,8 @@ class Report implements EventSubscriberInterface
         $consoleIO = $event->getConsoleIO();
         $processor = $event->getProcessor();
 
+        $consoleIO->coverageSection('processing code coverage reports');
+
         foreach($this->processors as $reportProcessor){
             $reportProcessor->process($processor, $consoleIO);
         }

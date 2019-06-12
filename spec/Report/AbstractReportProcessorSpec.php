@@ -73,8 +73,8 @@ class AbstractReportProcessorSpec extends ObjectBehavior
         $options = $this->defaultOptions;
         $this->beConstructedWith($options);
         $processor->getCodeCoverage()->shouldBeCalled()->willThrow(new \Exception('some-error'));
-        $consoleIO->coverageError(Argument::containingString($options['type']))->shouldBeCalled();
-        $consoleIO->coverageError(Argument::containingString('some-error'))->shouldBeCalled();
+        $consoleIO->coverageInfo(Argument::containingString($options['type']))->shouldBeCalled();
+        $consoleIO->coverageInfo(Argument::containingString('some-error'))->shouldBeCalled();
 
         $this->process($processor, $consoleIO);
     }

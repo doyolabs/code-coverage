@@ -39,7 +39,6 @@ class ReportSpec extends ObjectBehavior
 
     function its_generate_should_create_code_coverage_reports(
         ReportProcessorInterface $reportSuccess,
-        ReportProcessorInterface $reportFail,
         ConsoleIO $consoleIO,
         CoverageEvent $coverageEvent,
         ProcessorInterface $processor
