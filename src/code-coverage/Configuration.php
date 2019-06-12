@@ -24,30 +24,10 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $root = new TreeBuilder();
+        $treeBuilder = new TreeBuilder();
+        $this->configure($treeBuilder->root('config'));
 
-        $node = new ArrayNodeDefinition('coverage');
-        $this->configure($node);
-        if(method_exists($root,'getRootNode')){
-            $root = new TreeBuilder('root');
-            $root
-                ->getRootNode()
-                    ->children()
-                        ->append($node)
-                    ->end()
-                ->end()
-            ;
-        }else{
-            $root
-                ->root('root')
-                    ->children()
-                        ->append($node)
-                    ->end()
-                ->end()
-            ;
-        }
-
-        return $root;
+        return $treeBuilder;
     }
 
     public function configure(ArrayNodeDefinition $node)

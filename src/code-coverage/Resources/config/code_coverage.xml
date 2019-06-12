@@ -2,7 +2,6 @@
 
 <container xmlns="http://symfony.com/schema/dic/services">
     <parameters>
-        <parameter key="report.class">Doyo\Bridge\CodeCoverage\Report</parameter>
         <parameter key="driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
         <parameter key="processor.class">Doyo\Bridge\CodeCoverage\Processor</parameter>
         <parameter key="runtime.class">Doyo\Bridge\CodeCoverage\Environment\Runtime</parameter>
@@ -39,10 +38,6 @@
             <call method="setCodeCoverage">
                 <argument type="service" id="code_coverage"/>
             </call>
-        </service>
-
-        <service id="report" class="%report.class%">
-            <tag name="coverage.subscriber"/>
         </service>
 
         <service id="coverage" class="%coverage.class%">

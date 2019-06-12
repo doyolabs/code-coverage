@@ -21,7 +21,9 @@ class CodeCoverageExtension extends Extension
 
         $configuration = $this->processConfiguration(new Configuration(), $configs);
 
+        $container->setParameter('reports', $configuration['reports']);
         $loader->load('code_coverage.xml');
+        $loader->load('reports.xml');
     }
 
     public function getAlias()

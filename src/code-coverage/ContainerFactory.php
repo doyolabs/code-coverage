@@ -3,6 +3,7 @@
 
 namespace Doyo\Bridge\CodeCoverage;
 
+use Doyo\Bridge\CodeCoverage\Compiler\ReportPass;
 use Doyo\Bridge\CodeCoverage\DependencyInjection\CodeCoverageExtension;
 use Doyo\Bridge\CodeCoverage\DependencyInjection\DriverPass;
 use Symfony\Component\Config\ConfigCache;
@@ -46,16 +47,19 @@ class ContainerFactory
         $id = $this->id;
         $class = $this->class;
         $file = sys_get_temp_dir().'/doyo/coverage/'.$id.'.php';
-        $config = ['coverage' => $this->config];
+        //$config = ['config' => $this->config];
+        $config = $this->config;
 
         $cachedContainer = new ConfigCache($file, $this->debug);
         if(!$cachedContainer->isFresh() || $this->debug){
             //$this->dumpConfig();
             $builder = new ContainerBuilder();
-            $builder->registerExtension(new CodeCoverageExtension());
-            $builder->addCompilerPass(new DriverPass());
 
+            $builder->registerExtension(new CodeCoverageExtension());
             $builder->loadFromExtension('coverage',$config);
+
+            $builder->addCompilerPass(new DriverPass());
+            $builder->addCompilerPass(new ReportPass());
             $builder->compile();
 
             $dumper = new PhpDumper($builder);

@@ -103,7 +103,7 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
 
     }
 
-    private function createProcessor(array $options)
+    protected function createProcessor(array $options)
     {
         $r = new \ReflectionClass($this->getProcessorClass());
         $args = [];
@@ -114,15 +114,24 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
             && is_array($constructorParams = $constructor->getParameters())
         ){
             foreach($constructorParams as $parameter){
-                if(!$parameter->isDefaultValueAvailable()){
+                $name = $parameter->getName();
+                $value = null;
+                $default = null;
+                if(
+                    !$parameter->isDefaultValueAvailable()
+                    && !isset($options[$name])
+                ){
                     break;
                 }
-                $name = $parameter->getName();
-                $value = $parameter->getDefaultValue();
+
+                if($parameter->isDefaultValueAvailable()){
+                    $default = $parameter->getDefaultValue();
+                }
+
                 if(isset($options[$name])){
                     $value = $options[$name];
                 }
-                $args[] = $value;
+                $args[] = !is_null($value) ? $value:$default;
             }
         }
 

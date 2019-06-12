@@ -19,13 +19,20 @@ Feature: Configuration
     Given I have load container with:
       """
       reports:
-        php: build/cov/php.cov
+        clover: build/clover.xml
+        crap4j: build/logs/crap4j.xml
         html: build/html
+        php: build/cov/php.cov
+        text: console
+        xml: build/xml
       """
     Then service "<processor>" should loaded
 
     Examples:
-      | processor                       |
-      | report.processors.html          |
-      | report.processors.php           |
-      | report.processors.clover        |
+      | processor          |
+      | reports.clover     |
+      | reports.crap4j     |
+      | reports.html       |
+      | reports.php        |
+      | reports.text       |
+      | reports.xml        |
