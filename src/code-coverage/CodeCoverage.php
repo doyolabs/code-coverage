@@ -37,7 +37,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
     }
 
 
-    public function refresh()
+    public function refresh(): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
 
@@ -49,7 +49,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
         return $coverageEvent;
     }
 
-    public function start(TestCase $testCase)
+    public function start(TestCase $testCase): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
 
@@ -62,7 +62,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
         return $coverageEvent;
     }
 
-    public function stop()
+    public function stop(): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
         if($coverageEvent->canCollectCodeCoverage()){
@@ -73,7 +73,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
         return $coverageEvent;
     }
 
-    public function complete()
+    public function complete(): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
         $consoleIO = $coverageEvent->getConsoleIO();
@@ -89,7 +89,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
         return $coverageEvent;
     }
 
-    public function setResult(int $result)
+    public function setResult(int $result): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
 

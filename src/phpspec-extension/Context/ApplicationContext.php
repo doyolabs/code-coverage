@@ -2,8 +2,13 @@
 
 namespace Doyo\PhpSpec\CodeCoverage\Context;
 
-include __DIR__.'/../Resources/Fake/ReRunner.php';
-include __DIR__.'/../Resources/Fake/Prompter.php';
+if(version_compare(PHP_VERSION,'7.1', '>=')){
+    include __DIR__.'/../Resources/Fake/ReRunner.php';
+    include __DIR__.'/../Resources/Fake/Prompter.php';
+}else{
+    include __DIR__.'/../Resources/Fake70/ReRunner.php';
+    include __DIR__.'/../Resources/Fake70/Prompter.php';
+}
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\ScenarioScope;
