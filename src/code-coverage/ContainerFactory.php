@@ -60,7 +60,7 @@ class ContainerFactory
 
             $builder->addCompilerPass(new CoveragePass());
             $builder->addCompilerPass(new ReportPass());
-            $builder->compile();
+            $builder->compile(true);
 
             $dumper = new PhpDumper($builder);
             $cachedContainer->write(

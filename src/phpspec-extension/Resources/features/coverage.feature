@@ -52,8 +52,8 @@ Feature: PHP Spec Code Coverage
     And service "doyo.coverage.container" should loaded
     And service "doyo.coverage.listener" should loaded
     And I should see "2 passed"
-    And I should see "generated html to build/phpspec"
-    And I should see "generated php to build/cov/phpspec.cov"
+    And I should see "generated html"
+    And I should see "generated php"
     And I should see "\Test::Test\Foo"
     When I read coverage report "build/cov/phpspec.cov"
     Then file "src/Test/Foo.php" line 9 should covered

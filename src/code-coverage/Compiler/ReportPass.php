@@ -26,6 +26,9 @@ class ReportPass implements CompilerPassInterface
             return;
         }
 
+        if($type !== 'text'){
+            $config['target'] = getcwd().DIRECTORY_SEPARATOR.$config['target'];
+        }
         $report = $container->getDefinition('report');
 
         $id = 'reports.'.$type;
@@ -34,7 +37,7 @@ class ReportPass implements CompilerPassInterface
         $definition = new Definition($class);
         $definition->addArgument($config);
         $definition->setPublic(true);
-        
+
         $container->setDefinition($id, $definition);
 
         $report->addMethodCall('addProcessor', [new Reference($id)]);
