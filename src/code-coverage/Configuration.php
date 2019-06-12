@@ -19,19 +19,34 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @return TreeBuilder
+     */
     public function getConfigTreeBuilder()
     {
-        $root = new TreeBuilder('root');
+        $root = new TreeBuilder();
 
         $node = new ArrayNodeDefinition('coverage');
         $this->configure($node);
-        $root
-            ->getRootNode()
-                ->children()
-                    ->append($node)
+        if(method_exists($root,'getRootNode')){
+            $root = new TreeBuilder('root');
+            $root
+                ->getRootNode()
+                    ->children()
+                        ->append($node)
+                    ->end()
                 ->end()
-            ->end()
-        ;
+            ;
+        }else{
+            $root
+                ->root('root')
+                    ->children()
+                        ->append($node)
+                    ->end()
+                ->end()
+            ;
+        }
+
         return $root;
     }
 
@@ -99,7 +114,7 @@ class Configuration implements ConfigurationInterface
         $builder
             ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('report')
+                ->arrayNode('reports')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->append($this->addOptionsNode('clover'))
