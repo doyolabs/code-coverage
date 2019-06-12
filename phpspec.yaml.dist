@@ -28,6 +28,7 @@ extensions:
               exclude:
                   - src/*/Spec
                   - src/*/Resources
+                  - src/*/Context
         reports:
             php: build/cov/phpspec.cov
             html: build/phpspec

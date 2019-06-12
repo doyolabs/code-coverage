@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 $header = <<<'HEADER'
-This file is part of the doyo/code-coverage-bridge project.
+This file is part of the doyo/code-coverage project.
 
 (c) Anthonius Munthi <me@itstoni.com>
 

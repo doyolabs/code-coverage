@@ -13,14 +13,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 
-class CodeCoverageContext implements Context
+class ContainerContext implements Context
 {
     /**
      * @var ContainerInterface
      */
     private $container;
 
-    public function setContainer(ContainerInterface $container)
+    public function setContainer($container)
     {
         $this->container = $container;
     }

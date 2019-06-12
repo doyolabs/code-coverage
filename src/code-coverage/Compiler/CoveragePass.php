@@ -32,14 +32,13 @@ class CoveragePass implements CompilerPassInterface
     {
         $config     = $container->getParameter('config.filter');
         $definition = $container->getDefinition('coverage.filter');
-        $basePath = getcwd();
 
         foreach ($config as $options) {
-            $options['basePath'] = $basePath;
+            $options['basePath'] = "";
             $this->filterWhitelist($definition, $options, 'add');
             $exclude = $options['exclude'];
             foreach ($exclude as $item) {
-                $item['basePath'] = $basePath;
+                $item['basePath'] = "";
                 $this->filterWhitelist($definition, $item, 'remove');
             }
         }
@@ -51,8 +50,8 @@ class CoveragePass implements CompilerPassInterface
         $suffix    = $options['suffix'] ?: '.php';
         $prefix    = $options['prefix'] ?: '';
         $type      = $options['directory'] ? 'directory' : 'file';
-        $directory = $basePath.\DIRECTORY_SEPARATOR.$options['directory'];
-        $file      = $basePath.\DIRECTORY_SEPARATOR.$options['file'];
+        $directory = $options['directory'];
+        $file      = $options['file'];
 
         if (preg_match('/\/\*(\..+)/', $directory, $matches)) {
             $suffix    = $matches[1];
