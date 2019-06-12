@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services">
+    <parameters>
+        <parameter key="report.class">Doyo\Bridge\CodeCoverage\Report</parameter>
+        <parameter key="reports.clover.class">Doyo\Bridge\CodeCoverage\Report\Clover</parameter>
+        <parameter key="reports.crap4j.class">Doyo\Bridge\CodeCoverage\Report\Crap4j</parameter>
+        <parameter key="reports.html.class">Doyo\Bridge\CodeCoverage\Report\Html</parameter>
+        <parameter key="reports.php.class">Doyo\Bridge\CodeCoverage\Report\PHP</parameter>
+        <parameter key="reports.text.class">Doyo\Bridge\CodeCoverage\Report\Text</parameter>
+        <parameter key="reports.xml.class">Doyo\Bridge\CodeCoverage\Report\XML</parameter>
+    </parameters>
+
+    <services>
+        <defaults public="true">
+        </defaults>
+
+        <service id="report" class="%report.class%">
+            <tag name="coverage.subscriber"/>
+        </service>
+    </services>
+</container>

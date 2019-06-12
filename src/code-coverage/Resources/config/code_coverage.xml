@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services">
+    <parameters>
+        <parameter key="driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
+        <parameter key="processor.class">Doyo\Bridge\CodeCoverage\Processor</parameter>
+        <parameter key="runtime.class">Doyo\Bridge\CodeCoverage\Environment\Runtime</parameter>
+        <parameter key="php.coverage.class">SebastianBergmann\CodeCoverage\CodeCoverage</parameter>
+        <parameter key="php.coverage.filter.class">SebastianBergmann\CodeCoverage\Filter</parameter>
+        <parameter key="coverage.driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
+        <parameter key="coverage.class">Doyo\Bridge\CodeCoverage\CodeCoverage</parameter>
+        <parameter key="console.io.class">Doyo\Bridge\CodeCoverage\Console\Console</parameter>
+    </parameters>
+    <services>
+        <defaults autoconfigure="true" public="true"/>
+
+        <service id="runtime" class="%runtime.class%"/>
+
+        <service id="coverage.driver" class="%coverage.driver.class%"/>
+        <service id="coverage.filter" class="%php.coverage.filter.class%"/>
+
+        <service id="console.input" synthetic="true"/>
+        <service id="console.output" synthetic="true"/>
+
+        <service id="code_coverage" class="%php.coverage.class%">
+            <argument type="service" id="coverage.driver"/>
+            <argument type="service" id="coverage.filter"/>
+        </service>
+
+        <service id="console.io" class="%console.io.class%">
+            <argument type="service" id="console.input"/>
+            <argument type="service" id="console.output"/>
+        </service>
+
+        <service id="processor" class="%processor.class%">
+            <argument id="coverage.driver"/>
+            <argument id="coverage.filter"/>
+            <call method="setCodeCoverage">
+                <argument type="service" id="code_coverage"/>
+            </call>
+        </service>
+
+        <service id="coverage" class="%coverage.class%">
+            <argument type="service" id="processor"/>
+            <argument type="service" id="console.io"/>
+            <argument type="service" id="runtime"/>
+        </service>
+    </services>
+</container>

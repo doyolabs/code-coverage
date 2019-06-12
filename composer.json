@@ -14,17 +14,24 @@
             "dev-master": "1.0-dev"
         }
     },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Doyo\\Bridge\\CodeCoverage\\": "src/"
+            "Doyo\\Bridge\\CodeCoverage\\": "src/code-coverage",
+            "Doyo\\Behat\\CodeCoverage\\": "src/behat-extension",
+            "Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec-extension"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\Doyo\\Bridge\\CodeCoverage\\": "spec/",
-            "Test\\Doyo\\Bridge\\CodeCoverage\\": "tests/"
+            "Spec\\Doyo\\Bridge\\CodeCoverage\\": "src/code-coverage/Spec",
+            "Spec\\Doyo\\Behat\\CodeCoverage\\": "src/behat-extension/Spec",
+            "Spec\\Doyo\\PhpSpec\\CodeCoverage\\": "src/php-extension/Spec"
         }
     },
     "replace": {
@@ -35,15 +42,18 @@
         "phpunit/php-code-coverage": "^4.3 | >=5.0",
         "sebastian/environment": "^3.1 | ^4.2",
         "doyo/symfony-bridge": "^1.0@dev",
-        "symfony/event-dispatcher": "^3.4 | ^4.0"
+        "symfony/event-dispatcher": "^3.4 | ^4.0",
+        "symfony/dependency-injection": "^3.4 | ^4.0",
+        "symfony/config": "^3.4 | ^4.0",
+        "behat/behat": "^3.5"
     },
     "require-dev": {
         "phpspec/phpspec": "^4.3 | ^5.0",
         "symfony/http-foundation": "^3.4 | ^4.3",
         "symfony/cache": "^3.4",
         "phpunit/phpcov": "^4.0 | >=5.0",
-        "doyo/phpspec-code-coverage": "^1.0@dev",
         "phpunit/phpunit": ">=6.0",
-        "symfony/console": "^3.4 | ^4.3"
+        "symfony/console": "^3.4 | ^4.3",
+        "symfony/yaml": "^3.4 | ^4.0"
     }
 }

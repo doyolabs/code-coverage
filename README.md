@@ -1,17 +1,18 @@
-PHP Code Coverage Bridge [![License](https://img.shields.io/packagist/l/doyo/code-coverage-bridge.svg?style=flat-square)](https://github.com/doyolabs/code-coverage-bridge/blob/master/LICENSE)
+Code Coverage
 ----
 This packages add functionality to customize code coverage collecting
 
+[![License](https://img.shields.io/packagist/l/doyo/code-coverage.svg?style=flat-square)](https://github.com/doyolabs/code-coverage/blob/master/LICENSE)
 [![Build Status][travis-master]][travis]
 [![Coverage][cover-stat-master]][cover-master]
 [![Score][score-stat-master]][score-master] 
 
-[travis]:                   https://travis-ci.com/doyolabs/code-coverage-bridge
-[travis-master]:            https://img.shields.io/travis/com/doyolabs/code-coverage-bridge/master.svg?style=flat-square
-[cover-master]:             https://coveralls.io/github/doyolabs/code-coverage-bridge?branch=master
-[cover-stat-master]:        https://img.shields.io/coveralls/github/doyolabs/code-coverage-bridge/master.svg?style=flat-square
-[score-master]:             https://scrutinizer-ci.com/g/doyolabs/code-coverage-bridge/?branch=master
-[score-stat-master]:        https://img.shields.io/scrutinizer/quality/g/doyolabs/code-coverage-bridge/master.svg?style=flat-square
+[travis]:                   https://travis-ci.com/doyolabs/code-coverage
+[travis-master]:            https://img.shields.io/travis/com/doyolabs/code-coverage/master.svg?style=flat-square
+[cover-master]:             https://coveralls.io/github/doyolabs/code-coverage?branch=master
+[cover-stat-master]:        https://img.shields.io/coveralls/github/doyolabs/code-coverage/master.svg?style=flat-square
+[score-master]:             https://scrutinizer-ci.com/g/doyolabs/code-coverage/?branch=master
+[score-stat-master]:        https://img.shields.io/scrutinizer/quality/g/doyolabs/code-coverage/master.svg?style=flat-square
 
 About
 ----

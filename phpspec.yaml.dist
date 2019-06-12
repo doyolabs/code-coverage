@@ -1,14 +1,33 @@
 formatter.name: dot
 suites:
-    doyo_coverage:
+    code_coverage:
         namespace: Doyo\Bridge\CodeCoverage
         psr4_prefix: Doyo\Bridge\CodeCoverage
+        spec_prefix: Spec
+        src_path: src/code-coverage
+        spec_path: src/code-coverage
+
+    behat_extension:
+        namespace: Doyo\Behat\CodeCoverage
+        psr4_prefix: Doyo\Behat\CodeCoverage
+        spec_prefix: Spec
+        src_path: src/behat-extension
+        spec_path: src/behat-extension
+
+    phpspec_extension:
+        namespace: Doyo\PhpSpec\CodeCoverage
+        psr4_prefix: Doyo\PhpSpec\CodeCoverage
+        spec_prefix: Spec
+        src_path: src/phpspec-extension
+        spec_path: src/phpspec-extension
 
 extensions:
     Doyo\PhpSpec\CodeCoverage\Extension:
-        filters:
-            whitelist:
-                - src
+        filter:
+            - directory: src
+              exclude:
+                  - src/*/Spec
+                  - src/*/Resources
         reports:
             php: build/cov/phpspec.cov
             html: build/phpspec
