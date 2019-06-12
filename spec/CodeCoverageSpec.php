@@ -33,6 +33,15 @@ class CodeCoverageSpec extends ObjectBehavior
         $this->shouldHaveType(CodeCoverage::class);
     }
 
+
+    function its_createContainer_should_create_new_container()
+    {
+        $config = [
+            'date' => new \DateTime()
+        ];
+        $this::createContainer($config)->shouldHaveType(CodeCoverage::CONTAINER_CLASS);
+    }
+
     function it_should_dispatch_coverage_refresh_event(
         ProcessorInterface $processor,
         TestSubscriber $subscriber

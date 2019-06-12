@@ -35,7 +35,9 @@
         "phpunit/php-code-coverage": "^4.3 | >=5.0",
         "sebastian/environment": "^3.1 | ^4.2",
         "doyo/symfony-bridge": "^1.0@dev",
-        "symfony/event-dispatcher": "^3.4 | ^4.0"
+        "symfony/event-dispatcher": "^3.4 | ^4.0",
+        "symfony/dependency-injection": "^3.4 | ^4.0",
+        "symfony/config": "^3.4 | ^4.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^4.3 | ^5.0",
