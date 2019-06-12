@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\PhpSpec\CodeCoverage\Listener;
 
@@ -10,7 +20,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CoverageListener implements EventSubscriberInterface
 {
-
     /**
      * @var CodeCoverageInterface
      */
@@ -30,17 +39,17 @@ class CoverageListener implements EventSubscriberInterface
     {
         return [
             'beforeExample' => ['beforeExample', -10],
-            'afterExample' => ['afterExample', -10],
-            'afterSuite' => ['afterSuite', -10]
+            'afterExample'  => ['afterExample', -10],
+            'afterSuite'    => ['afterSuite', -10],
         ];
     }
 
     public function beforeExample(ExampleEvent $exampleEvent)
     {
         $example = $exampleEvent->getExample();
-        $name = strtr('%spec%:%example%', [
+        $name    = strtr('%spec%:%example%', [
             '%spec%'    => $example->getSpecification()->getTitle(),
-            '%example%' => $example->getTitle()
+            '%example%' => $example->getTitle(),
         ]);
         $testCase = new TestCase($name);
 
@@ -50,11 +59,11 @@ class CoverageListener implements EventSubscriberInterface
     public function afterExample(ExampleEvent $exampleEvent)
     {
         $result = $exampleEvent->getResult();
-        $map = [
-            ExampleEvent::PASSED => TestCase::RESULT_PASSED,
+        $map    = [
+            ExampleEvent::PASSED  => TestCase::RESULT_PASSED,
             ExampleEvent::SKIPPED => TestCase::RESULT_SKIPPED,
-            ExampleEvent::FAILED => TestCase::RESULT_FAILED,
-            ExampleEvent::BROKEN => TestCase::RESULT_ERROR,
+            ExampleEvent::FAILED  => TestCase::RESULT_FAILED,
+            ExampleEvent::BROKEN  => TestCase::RESULT_ERROR,
             ExampleEvent::PENDING => TestCase::RESULT_SKIPPED,
         ];
 
@@ -67,5 +76,4 @@ class CoverageListener implements EventSubscriberInterface
     {
         $this->coverage->complete();
     }
-
 }

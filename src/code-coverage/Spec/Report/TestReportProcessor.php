@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Spec\Doyo\Bridge\CodeCoverage\Report;
 
@@ -13,7 +23,7 @@ class TestReportProcessor
 
     public function __construct($foo = 'Foo Bar', $hello = 'Hello World')
     {
-        $this->foo = $foo;
+        $this->foo   = $foo;
         $this->hello = $hello;
     }
 

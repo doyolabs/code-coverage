@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Spec\Doyo\Bridge\CodeCoverage\Report;
 
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
@@ -14,23 +25,23 @@ class AbstractReportProcessorSpec extends ObjectBehavior
 {
     private $defaultOptions;
 
-    function let()
+    public function let()
     {
         $this->beAnInstanceOf(TestAbstractReportProcessor::class);
         $this->defaultOptions = [
-            'target' => sys_get_temp_dir().'/doyo/report/target',
-            'type' => 'test',
+            'target'         => sys_get_temp_dir().'/doyo/report/target',
+            'type'           => 'test',
             'fileSystemType' => 'file',
         ];
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith($this->defaultOptions);
         $this->shouldHaveType(AbstractReportProcessor::class);
     }
 
-    function it_should_create_processor_based_on_their_default_value()
+    public function it_should_create_processor_based_on_their_default_value()
     {
         $options = $this->defaultOptions;
         $this->beConstructedWith($options);
@@ -40,7 +51,7 @@ class AbstractReportProcessorSpec extends ObjectBehavior
         $this->getProcessor()->getHello()->shouldReturn('Hello World');
     }
 
-    function it_should_customize_constructor_parameters_for_processor()
+    public function it_should_customize_constructor_parameters_for_processor()
     {
         $options = array_merge($this->defaultOptions, [
             'hello' => 'Hello World Foo Bar',
@@ -51,11 +62,10 @@ class AbstractReportProcessorSpec extends ObjectBehavior
         $this->getProcessor()->getHello()->shouldReturn('Hello World Foo Bar');
     }
 
-    function it_should_process_report(
+    public function it_should_process_report(
         ProcessorInterface $processor,
         ConsoleIO $consoleIO
-    )
-    {
+    ) {
         $options = $this->defaultOptions;
         $this->beConstructedWith($options);
         $coverage = new CodeCoverage(new Dummy());
@@ -65,11 +75,10 @@ class AbstractReportProcessorSpec extends ObjectBehavior
         $this->process($processor, $consoleIO);
     }
 
-    function it_should_handle_report_process_error(
+    public function it_should_handle_report_process_error(
         ProcessorInterface $processor,
         ConsoleIO $consoleIO
-    )
-    {
+    ) {
         $options = $this->defaultOptions;
         $this->beConstructedWith($options);
         $processor->getCodeCoverage()->shouldBeCalled()->willThrow(new \Exception('some-error'));

@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Spec\Doyo\Behat\CodeCoverage\Listener;
 
 use Behat\Behat\EventDispatcher\Event\ScenarioTested;
@@ -15,34 +26,31 @@ use Prophecy\Argument;
 
 class CoverageListenerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         CodeCoverageInterface $coverage
-    )
-    {
+    ) {
         $this->beConstructedWith($coverage, true);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(CoverageListener::class);
     }
 
-    function it_should_refresh_code_coverage(
+    public function it_should_refresh_code_coverage(
         CodeCoverageInterface $coverage
-    )
-    {
+    ) {
         $coverage->refresh()->shouldBeCalledOnce();
 
         $this->refresh();
     }
 
-    function it_should_start_code_coverage(
+    public function it_should_start_code_coverage(
         CodeCoverageInterface $coverage,
         ScenarioTested $tested,
         ScenarioInterface $scenario,
         FeatureNode $feature
-    )
-    {
+    ) {
         $tested->getScenario()
             ->willReturn($scenario);
         $tested->getFeature()
@@ -58,12 +66,11 @@ class CoverageListenerSpec extends ObjectBehavior
         $this->start($tested);
     }
 
-    function it_should_stop_code_coverage(
+    public function it_should_stop_code_coverage(
         AfterTested $tested,
         CodeCoverageInterface $coverage,
         TestResult $result
-    )
-    {
+    ) {
         $tested->getTestResult()->willReturn($result);
         $result->getResultCode()->willReturn(0);
 
@@ -73,10 +80,9 @@ class CoverageListenerSpec extends ObjectBehavior
         $this->stop($tested);
     }
 
-    function it_should_complete_code_coverage(
+    public function it_should_complete_code_coverage(
         CodeCoverageInterface $coverage
-    )
-    {
+    ) {
         $coverage->complete()->shouldBeCalledOnce();
 
         $this->complete();

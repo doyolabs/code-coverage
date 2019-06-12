@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the doyo/behat-code-coverage project.
+ * This file is part of the doyo/code-coverage project.
  *
  * (c) Anthonius Munthi <me@itstoni.com>
  *
@@ -19,15 +19,14 @@ use SebastianBergmann\CodeCoverage\Filter;
 interface ProcessorInterface
 {
     /**
-     * Set current test case for code coverage
+     * Set current test case for code coverage.
      *
      * @param TestCase $testCase
-     * @return void
      */
     public function setCurrentTestCase(TestCase $testCase);
 
     /**
-     * Get current test case for code coverage
+     * Get current test case for code coverage.
      *
      * @return TestCase:null
      */

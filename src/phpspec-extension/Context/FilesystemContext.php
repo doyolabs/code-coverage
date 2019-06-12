@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Doyo\PhpSpec\CodeCoverage\Context;
 
 use Behat\Behat\Context\Context;
@@ -39,7 +50,7 @@ class FilesystemContext implements Context
         chdir($this->workingDirectory);
 
         $fakeHomeDirectory = sprintf('%s/fake-home/', $this->workingDirectory);
-        $this->filesystem->mkdir($fakeHomeDirectory . '.phpspec');
+        $this->filesystem->mkdir($fakeHomeDirectory.'.phpspec');
 
         if (!empty($_SERVER['HOMEDRIVE']) && !empty($_SERVER['HOMEPATH'])) {
             $_SERVER['HOMEPATH'] = substr($fakeHomeDirectory, 2);
@@ -47,10 +58,10 @@ class FilesystemContext implements Context
             putenv(sprintf('HOME=%s', $fakeHomeDirectory));
         }
 
-        $this->filesystem->mkdir($this->workingDirectory . '/vendor');
+        $this->filesystem->mkdir($this->workingDirectory.'/vendor');
         $this->filesystem->copy(
-            __DIR__ . '/../Resources/autoloader/autoload.php',
-            $this->workingDirectory . '/vendor/autoload.php'
+            __DIR__.'/../Resources/autoloader/autoload.php',
+            $this->workingDirectory.'/vendor/autoload.php'
         );
     }
 
@@ -68,6 +79,8 @@ class FilesystemContext implements Context
 
     /**
      * @Given I have a custom :template template that contains:
+     *
+     * @param mixed $template
      */
     public function iHaveACustomTemplateThatContains($template, PyStringNode $contents)
     {
@@ -76,24 +89,30 @@ class FilesystemContext implements Context
 
     /**
      * @Given the bootstrap file :file contains:
+     *
+     * @param mixed $file
      */
     public function theFileContains($file, PyStringNode $contents)
     {
-        $this->filesystem->dumpFile($file, (string)$contents);
+        $this->filesystem->dumpFile($file, (string) $contents);
     }
 
     /**
      * @Given the class file :file contains:
      * @Given the trait file :file contains:
+     *
+     * @param mixed $file
      */
     public function theClassOrTraitFileContains($file, PyStringNode $contents)
     {
         $this->theFileContains($file, $contents);
-        require_once($file);
+        require_once $file;
     }
 
     /**
      * @Given the spec file :file contains:
+     *
+     * @param mixed $file
      */
     public function theSpecFileContains($file, PyStringNode $contents)
     {
@@ -110,6 +129,8 @@ class FilesystemContext implements Context
 
     /**
      * @Given there is no file :file
+     *
+     * @param mixed $file
      */
     public function thereIsNoFile($file)
     {
@@ -124,6 +145,8 @@ class FilesystemContext implements Context
     /**
      * @Then the class in :file should contain:
      * @Then a new class/spec should be generated in the :file:
+     *
+     * @param mixed $file
      */
     public function theFileShouldContain($file, PyStringNode $contents)
     {
@@ -134,8 +157,8 @@ class FilesystemContext implements Context
             ));
         }
 
-        $expectedContents = (string)$contents;
-        if ($expectedContents != file_get_contents($file)) {
+        $expectedContents = (string) $contents;
+        if ($expectedContents !== file_get_contents($file)) {
             throw new \Exception(sprintf(
                 "File at '%s' did not contain expected contents.\nExpected: '%s'\nActual: '%s'",
                 $file,
@@ -147,10 +170,12 @@ class FilesystemContext implements Context
 
     /**
      * @Given the config file located in :folder contains:
+     *
+     * @param mixed $folder
      */
     public function theConfigFileInFolderContains($folder, PyStringNode $contents)
     {
-        $this->theFileContains($folder.DIRECTORY_SEPARATOR.'phpspec.yml', $contents);
+        $this->theFileContains($folder.\DIRECTORY_SEPARATOR.'phpspec.yml', $contents);
     }
 
     /**
@@ -158,11 +183,13 @@ class FilesystemContext implements Context
      */
     public function iHaveNotConfiguredAnAutoloader()
     {
-        $this->filesystem->remove($this->workingDirectory . '/vendor/autoload.php');
+        $this->filesystem->remove($this->workingDirectory.'/vendor/autoload.php');
     }
 
     /**
      * @Given there should be no file :path
+     *
+     * @param mixed $path
      */
     public function thereShouldBeNoFile($path)
     {

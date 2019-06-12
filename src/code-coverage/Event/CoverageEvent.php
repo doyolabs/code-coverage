@@ -1,28 +1,37 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Event;
 
-
+use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 use Doyo\Bridge\CodeCoverage\Environment\RuntimeInterface;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Symfony\Bridge\EventDispatcher\Event;
-use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 
 /**
- * Class CoverageEvent
+ * Class CoverageEvent.
  *
- * @method bool canCollectCodeCoverage()
+ * @method bool   canCollectCodeCoverage()
  * @method string getDriverClass()
  */
 class CoverageEvent extends Event
 {
-    const refresh = 'refresh';
+    const refresh     = 'refresh';
     const beforeStart = 'beforeStart';
-    const start = 'start';
-    const stop = 'stop';
-    const complete = 'complete';
-    const report = 'report';
+    const start       = 'start';
+    const stop        = 'stop';
+    const complete    = 'complete';
+    const report      = 'report';
 
     /**
      * @var ProcessorInterface
@@ -43,11 +52,10 @@ class CoverageEvent extends Event
         ProcessorInterface $processor,
         ConsoleIO $consoleIO,
         RuntimeInterface $runtime
-    )
-    {
+    ) {
         $this->processor = $processor;
         $this->consoleIO = $consoleIO;
-        $this->runtime = $runtime;
+        $this->runtime   = $runtime;
     }
 
     /**
@@ -76,6 +84,6 @@ class CoverageEvent extends Event
 
     public function __call($name, $arguments)
     {
-        return call_user_func_array([$this->runtime, $name], $arguments);
+        return \call_user_func_array([$this->runtime, $name], $arguments);
     }
 }

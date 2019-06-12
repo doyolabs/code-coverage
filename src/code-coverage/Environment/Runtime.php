@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Environment;
 
@@ -10,7 +20,7 @@ use SebastianBergmann\CodeCoverage\Driver\Xdebug;
 use SebastianBergmann\Environment\Runtime as RuntimeEnvironment;
 
 /**
- * Class Runtime
+ * Class Runtime.
  *
  * @method bool isHHVM()
  * @method bool isPHPDBG()
@@ -39,7 +49,7 @@ final class Runtime implements RuntimeInterface
             $driverClass = PHPDBG::class;
         }
 
-        if ($this->hasXdebug()){
+        if ($this->hasXdebug()) {
             $driverClass =  Xdebug::class;
         }
         // @codeCoverageIgnoreEnd
@@ -58,6 +68,6 @@ final class Runtime implements RuntimeInterface
 
     public function __call($name, $arguments)
     {
-        return call_user_func_array([$this->runtime, $name], $arguments);
+        return \call_user_func_array([$this->runtime, $name], $arguments);
     }
 }

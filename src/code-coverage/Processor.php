@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the doyo/behat-code-coverage project.
+ * This file is part of the doyo/code-coverage project.
  *
  * (c) Anthonius Munthi <me@itstoni.com>
  *

@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Behat\CodeCoverage;
 
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Doyo\Behat\CodeCoverage\Compiler\CoveragePass;
 use Doyo\Behat\CodeCoverage\Controller\CliController;
 use Doyo\Behat\CodeCoverage\Listener\CoverageListener;
 use Doyo\Bridge\CodeCoverage\Configuration;
@@ -44,7 +53,7 @@ class Extension implements ExtensionInterface
         $definition = new Definition(CliController::class);
         $definition->setPublic(true);
         $definition->addTag('cli.controller', ['priority' => 80000]);
-        $container->setDefinition('doyo.coverage.cli_controller',$definition);
+        $container->setDefinition('doyo.coverage.cli_controller', $definition);
 
         // load listener
         $coverageContainer = (new ContainerFactory($config, true))->getContainer();
@@ -54,16 +63,15 @@ class Extension implements ExtensionInterface
         $container->set('doyo.coverage.container', $coverageContainer);
         $container->set('doyo.coverage', $coverageContainer->get('coverage'));
 
-        $input = $container->get('cli.input');
+        $input           = $container->get('cli.input');
         $coverageEnabled = $input->hasParameterOption(['--coverage'], true);
         $container->setParameter('doyo.coverage_enabled', $coverageEnabled);
-
 
         $listener = new Definition(CoverageListener::class);
         $listener->addArgument(new Reference('doyo.coverage'));
         $listener->addArgument($container->getParameterBag()->get('doyo.coverage_enabled'));
         $listener->addTag('event_dispatcher.subscriber');
 
-        $container->setDefinition('doyo.coverage.listener',$listener);
+        $container->setDefinition('doyo.coverage.listener', $listener);
     }
 }

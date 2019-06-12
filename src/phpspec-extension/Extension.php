@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\PhpSpec\CodeCoverage;
 
@@ -16,14 +26,14 @@ class Extension implements ExtensionInterface
     {
         $this->addCoverageOptions($container);
 
-        /* @var InputInterface $input */
+        /** @var InputInterface $input */
         $input = $container->get('console.input');
 
-        if(false===$input->hasParameterOption(['--coverage'],false)){
+        if (false === $input->hasParameterOption(['--coverage'], false)) {
             return;
         }
 
-        $container->define('doyo.coverage.container',function($container) use($params){
+        $container->define('doyo.coverage.container', function ($container) use ($params) {
             $coverageContainer = (new ContainerFactory($params, true))->getContainer();
             $input = $container->get('console.input');
             $output = $container->get('console.output');
@@ -33,17 +43,17 @@ class Extension implements ExtensionInterface
             return $coverageContainer;
         });
 
-        $container->define('doyo.coverage.listener', function($container){
+        $container->define('doyo.coverage.listener', function ($container) {
             $coverageContainer = $container->get('doyo.coverage.container');
             $coverage = $coverageContainer->get('coverage');
 
             return new CoverageListener($coverage);
-        },['event_dispatcher.listeners']);
+        }, ['event_dispatcher.listeners']);
     }
 
     public function addCoverageOptions(ServiceContainer $container)
     {
-        /* @var \PhpSpec\Console\Command\RunCommand $command */
+        /** @var \PhpSpec\Console\Command\RunCommand $command */
         $command = $container->get('console.commands.run');
         $command->addOption(
             'coverage',
