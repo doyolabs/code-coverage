@@ -33,9 +33,7 @@ class RoboFile extends Tasks
         $this->watch = true;
 
         $paths = [
-            'src',
-            'tests',
-            'spec',
+            'src'
         ];
 
         $this->taskWatch()
@@ -70,7 +68,6 @@ class RoboFile extends Tasks
         /** @var \Robo\Result[] $results */
         $results   = [];
         $results[] = $this->configurePhpSpec()->run();
-        //$results[] = $this->configurePhpUnit()->run();
 
         if (!$this->watch) {
             $results[] = $this->configureBehat()->run();
