@@ -5,7 +5,7 @@ namespace Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Compiler\ReportPass;
 use Doyo\Bridge\CodeCoverage\DependencyInjection\CodeCoverageExtension;
-use Doyo\Bridge\CodeCoverage\DependencyInjection\DriverPass;
+use Doyo\Bridge\CodeCoverage\Compiler\CoveragePass;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,7 +58,7 @@ class ContainerFactory
             $builder->registerExtension(new CodeCoverageExtension());
             $builder->loadFromExtension('coverage',$config);
 
-            $builder->addCompilerPass(new DriverPass());
+            $builder->addCompilerPass(new CoveragePass());
             $builder->addCompilerPass(new ReportPass());
             $builder->compile();
 

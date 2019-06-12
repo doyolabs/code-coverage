@@ -22,6 +22,8 @@ class CodeCoverageExtension extends Extension
         $configuration = $this->processConfiguration(new Configuration(), $configs);
 
         $container->setParameter('reports', $configuration['reports']);
+        $container->setParameter('config.filter', $configuration['filter']);
+
         $loader->load('code_coverage.xml');
         $loader->load('reports.xml');
     }

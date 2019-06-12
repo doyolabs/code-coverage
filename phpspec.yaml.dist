@@ -21,11 +21,13 @@ suites:
         src_path: src/phpspec-extension
         spec_path: src/phpspec-extension
 
-#extensions:
-#    Doyo\PhpSpec\CodeCoverage\Extension:
-#        filters:
-#            whitelist:
-#                - src
-#        reports:
-#            php: build/cov/phpspec.cov
-#            html: build/phpspec
+extensions:
+    Doyo\PhpSpec\CodeCoverage\Extension:
+        filter:
+            - directory: src
+              exclude:
+                  - src/*/Spec
+                  - src/*/Resources
+        reports:
+            php: build/cov/phpspec.cov
+            html: build/phpspec
