@@ -1,5 +1,7 @@
 default:
     suites:
         default:
+            paths:
+                - '%paths.base%/src/code-coverage/Resources/features'
             contexts:
-                - Doyo\Bridge\CodeCoverage\Context\CodeCoverageContext
+                - Doyo\Bridge\CodeCoverage\Context\ContainerContext

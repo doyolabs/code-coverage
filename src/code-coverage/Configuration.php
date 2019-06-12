@@ -20,6 +20,20 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
+     * @var callable
+     */
+    private $stringToArrayNormalizer;
+
+    public function __construct()
+    {
+        $this->stringToArrayNormalizer  = function ($v) {
+            return [
+                'target' => $v,
+            ];
+        };
+    }
+
+    /**
      * @return TreeBuilder
      */
     public function getConfigTreeBuilder()
@@ -102,6 +116,9 @@ class Configuration implements ConfigurationInterface
                         ->append($this->addOptionsNode('html'))
                         ->append($this->addOptionsNode('php'))
                         ->arrayNode('text')
+                            ->beforeNormalization()
+                                ->ifString()->then($this->stringToArrayNormalizer)
+                            ->end()
                             ->children()
                                 ->scalarNode('target')->defaultValue('console')->end()
                             ->end()
@@ -120,15 +137,10 @@ class Configuration implements ConfigurationInterface
     private function addOptionsNode($name)
     {
         $treeBuilder = new ArrayNodeDefinition($name);
-        $normalizer  = function ($v) {
-            return [
-                'target' => $v,
-            ];
-        };
 
         return $treeBuilder
             ->beforeNormalization()
-                ->ifString()->then($normalizer)
+                ->ifString()->then($this->stringToArrayNormalizer)
             ->end()
             ->scalarPrototype()->end();
     }
