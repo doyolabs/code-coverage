@@ -35,9 +35,9 @@ class CoverageListener implements EventSubscriberInterface
         ];
     }
 
-    public function beforeExample(ExampleEvent $suiteEvent)
+    public function beforeExample(ExampleEvent $exampleEvent)
     {
-        $example = $suiteEvent->getExample();
+        $example = $exampleEvent->getExample();
         $name = strtr('%spec%:%example%', [
             '%spec%'    => $example->getSpecification()->getTitle(),
             '%example%' => $example->getTitle()
