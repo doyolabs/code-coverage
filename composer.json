@@ -1,5 +1,5 @@
 {
-    "name": "doyo/code-coverage-bridge",
+    "name": "doyo/code-coverage",
     "description": "Add a functionality to customize phpunit/php-code-coverage",
     "type": "library",
     "license": "MIT",
