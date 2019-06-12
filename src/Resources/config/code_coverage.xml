@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services">
+    <parameters>
+        <parameter key="report.class">Doyo\Bridge\CodeCoverage\Report</parameter>
+        <parameter key="driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
+        <parameter key="processor.class">Doyo\Bridge\CodeCoverage\Processor</parameter>
+        <parameter key="runtime.class">Doyo\Bridge\CodeCoverage\Environment\Runtime</parameter>
+        <parameter key="php.code_coverage.class">SebastianBergmann\CodeCoverage\CodeCoverage</parameter>
+    </parameters>
+    <services>
+        <defaults autoconfigure="true" public="true"/>
+
+        <service id="runtime" class="%runtime.class%"/>
+
+        <service id="report" class="%report.class%">
+            <tag name="code_coverage.subscriber"/>
+        </service>
+    </services>
+</container>
