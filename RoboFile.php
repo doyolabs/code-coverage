@@ -73,7 +73,7 @@ class RoboFile extends Tasks
         //$results[] = $this->configurePhpUnit()->run();
 
         if (!$this->watch) {
-            //$results[] = $this->configureBehat()->run();
+            $results[] = $this->configureBehat()->run();
         }
 
         $hasError = false;
@@ -107,8 +107,6 @@ class RoboFile extends Tasks
             ->arg('merge')
             ->option('clover', 'build/logs/clover.xml')
             ->option('html', 'build/html')
-            ->option('php', 'build/all.cov')
-            ->option('text')
             ->option('ansi')
             ->arg('build/cov')
             ->run();
@@ -129,7 +127,7 @@ class RoboFile extends Tasks
             $command = $task->getCommand();
             $task    = $this->taskExec('phpdbg -qrr '.$command);
         } else {
-            $task->option('tags', '~@remote');
+            $task->option('tags', '~@coverage && ~@remote');
         }
 
         return $task;
@@ -148,22 +146,6 @@ class RoboFile extends Tasks
         if ($this->coverage) {
             $task->option('coverage');
             $task = $this->taskExec('phpdbg -qrr '.$task->getCommand());
-        }
-
-        return $task;
-    }
-
-    /**
-     * @return \Robo\Task\Base\Exec|\Robo\Task\Testing\PHPUnit
-     */
-    private function configurePhpUnit()
-    {
-        $task = $this->taskPhpUnit();
-
-        if ($this->coverage) {
-            $task = $this->taskExec('phpdbg -qrr '.$task->getCommand());
-            $task->option('coverage-php', 'build/cov/01-phpunit.cov')
-                ->option('coverage-html', 'build/phpunit');
         }
 
         return $task;

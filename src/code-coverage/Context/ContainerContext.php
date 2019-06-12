@@ -20,7 +20,7 @@ class ContainerContext implements Context
      */
     private $container;
 
-    public function setContainer(ContainerInterface $container)
+    public function setContainer($container)
     {
         $this->container = $container;
     }

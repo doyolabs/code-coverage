@@ -39,7 +39,6 @@ class Extension implements ExtensionInterface
 
             return new CoverageListener($coverage);
         },['event_dispatcher.listeners']);
-
     }
 
     public function addCoverageOptions(ServiceContainer $container)

@@ -83,7 +83,7 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
             $reportProcessor = $this->processor;
             $reportProcessor->process($processor->getCodeCoverage(), $this->target);
             $info = sprintf(
-                '<info>generated <comment>%s</comment> to: <comment>%s</comment></info>',
+                '<info>generated <comment>%s</comment> to <comment>%s</comment></info>',
                 $this->getType(),
                 $this->getTarget()
             );
