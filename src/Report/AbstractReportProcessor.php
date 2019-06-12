@@ -36,7 +36,6 @@ abstract class AbstractReportProcessor implements ReportProcessorInterface
     public function __construct(array $options = array())
     {
         $options = array_merge($this->defaultOptions, $options);
-
         foreach($options as $name => $value){
             $method = 'set'.ucfirst($name);
             if(method_exists($this,$method)){

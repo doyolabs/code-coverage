@@ -11,7 +11,6 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-develop": "2.0-dev",
             "dev-master": "1.0-dev"
         }
     },
@@ -35,14 +34,15 @@
         "php": ">=7.0",
         "phpunit/php-code-coverage": "^4.3 | >=5.0",
         "sebastian/environment": "^3.1 | ^4.2",
-        "doyo/symfony-bridge": "^1.0@dev"
+        "doyo/symfony-bridge": "^1.0@dev",
+        "symfony/event-dispatcher": "^3.4 | ^4.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^4.3 | ^5.0",
         "symfony/http-foundation": "^3.4 | ^4.3",
         "symfony/cache": "^3.4",
-        "phpunit/phpcov": "^4.0 | ^5.0",
-        "doyo/phpspec-code-coverage": "^1.0",
+        "phpunit/phpcov": "^4.0 | >=5.0",
+        "doyo/phpspec-code-coverage": "^1.0@dev",
         "phpunit/phpunit": ">=6.0",
         "symfony/console": "^3.4 | ^4.3"
     }

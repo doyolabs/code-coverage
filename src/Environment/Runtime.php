@@ -53,7 +53,7 @@ final class Runtime implements RuntimeInterface
      */
     public function canCollectCodeCoverage(): bool
     {
-        return $this->hasXdebug() || $this->hasPHPDBGCodeCoverage();
+        return $this->runtime->canCollectCodeCoverage();
     }
 
     public function __call($name, $arguments)

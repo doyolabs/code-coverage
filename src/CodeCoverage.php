@@ -68,12 +68,24 @@ class CodeCoverage extends EventDispatcher
     public function complete()
     {
         $coverageEvent = $this->coverageEvent;
+        $consoleIO = $coverageEvent->getConsoleIO();
 
         if($coverageEvent->canCollectCodeCoverage()){
             $coverageEvent->getProcessor()->complete();
             $this->dispatch($coverageEvent, CoverageEvent::complete);
+            $this->dispatch($coverageEvent, CoverageEvent::report);
+        }else{
+            $consoleIO->coverageError('Can not create coverage report. No code coverage driver available');
         }
 
         return $coverageEvent;
+    }
+
+    public function setResult(int $result)
+    {
+        $coverageEvent = $this->coverageEvent;
+        if($coverageEvent->canCollectCodeCoverage()){
+            $coverageEvent->getProcessor()->getCurrentTestCase()->setResult($result);
+        }
     }
 }

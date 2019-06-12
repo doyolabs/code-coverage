@@ -70,7 +70,7 @@ class RoboFile extends Tasks
         /** @var \Robo\Result[] $results */
         $results   = [];
         $results[] = $this->configurePhpSpec()->run();
-        $results[] = $this->configurePhpUnit()->run();
+        //$results[] = $this->configurePhpUnit()->run();
 
         if (!$this->watch) {
             //$results[] = $this->configureBehat()->run();
@@ -162,7 +162,7 @@ class RoboFile extends Tasks
 
         if ($this->coverage) {
             $task = $this->taskExec('phpdbg -qrr '.$task->getCommand());
-            $task->option('coverage-php', 'build/cov/phpunit.cov')
+            $task->option('coverage-php', 'build/cov/01-phpunit.cov')
                 ->option('coverage-html', 'build/phpunit');
         }
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Doyo\Bridge\CodeCoverage;
+namespace spec\Doyo\Bridge\CodeCoverage;
 
 
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;

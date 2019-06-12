@@ -123,6 +123,7 @@ class Processor implements ProcessorInterface
     {
         if (null === $this->codeCoverage) {
             $this->codeCoverage = new CodeCoverage($this->driver, $this->filter);
+            $this->codeCoverage->setDisableIgnoredLines(true);
         }
 
         return $this->codeCoverage;
