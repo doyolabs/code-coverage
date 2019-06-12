@@ -3,8 +3,7 @@
 
 namespace Doyo\PhpSpec\CodeCoverage\Listener;
 
-use Doyo\Bridge\CodeCoverage\CodeCoverage;
-use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
+use Doyo\Bridge\CodeCoverage\CodeCoverageInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
 use PhpSpec\Event\ExampleEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,16 +12,16 @@ class CoverageListener implements EventSubscriberInterface
 {
 
     /**
-     * @var CodeCoverage
+     * @var CodeCoverageInterface
      */
     private $coverage;
 
     /**
      * CoverageListener constructor.
      *
-     * @param CodeCoverage $coverage
+     * @param CodeCoverageInterface $coverage
      */
-    public function __construct(CodeCoverage $coverage)
+    public function __construct(CodeCoverageInterface $coverage)
     {
         $this->coverage = $coverage;
     }

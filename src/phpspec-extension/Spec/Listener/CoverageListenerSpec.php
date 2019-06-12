@@ -2,14 +2,14 @@
 
 namespace Spec\Doyo\PhpSpec\CodeCoverage\Listener;
 
-use Doyo\Bridge\CodeCoverage\CodeCoverage;
+use Doyo\Bridge\CodeCoverage\CodeCoverageInterface;
 use Doyo\PhpSpec\CodeCoverage\Listener\CoverageListener;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CoverageListenerSpec extends ObjectBehavior
 {
-    function let(CodeCoverage $coverage)
+    function let(CodeCoverageInterface $coverage)
     {
         $this->beConstructedWith($coverage);
     }

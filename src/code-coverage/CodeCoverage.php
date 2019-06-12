@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
  * A main code coverage actions that contain main processor
  * for collecting code coverage
  */
-class CodeCoverage extends EventDispatcher
+class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
 {
     const CONTAINER_CLASS = 'CodeCoverageContainer';
 
@@ -35,6 +35,7 @@ class CodeCoverage extends EventDispatcher
         $this->coverageEvent = new CoverageEvent($processor, $consoleIO, $runtime);
         parent::__construct();
     }
+
 
     public function refresh()
     {
@@ -91,47 +92,11 @@ class CodeCoverage extends EventDispatcher
     public function setResult(int $result)
     {
         $coverageEvent = $this->coverageEvent;
+
         if($coverageEvent->canCollectCodeCoverage()){
             $coverageEvent->getProcessor()->getCurrentTestCase()->setResult($result);
         }
-    }
 
-    /**
-     * Create container
-     *
-     * @param array $config
-     * @return ContainerInterface
-     */
-    public static function createContainer(array $config = []): ContainerInterface
-    {
-        $id = md5(serialize($config));
-        $cacheFile = sys_get_temp_dir().'/doyo/coverage/container_'.$id;
-
-        $configCache = new ConfigCache($cacheFile, false);
-
-        if(!$configCache->isFresh()){
-            static::compileConfig($configCache, $config);
-        }
-
-        require_once $cacheFile;
-        $class = static::CONTAINER_CLASS;
-        return new $class();
-    }
-
-    private static function compileConfig(ConfigCache $configCache, array $config)
-    {
-        $builder = new ContainerBuilder();
-        $builder->getParameterBag()->set('config', $config);
-
-        $builder->registerExtension(new CodeCoverageExtension());
-        $builder->compile();
-
-        $dumper = new PhpDumper($builder);
-        $configCache->write(
-            $dumper->dump([
-                'class' => static::CONTAINER_CLASS
-            ]),
-            $builder->getResources()
-        );
+        return $coverageEvent;
     }
 }

@@ -14,6 +14,10 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * Class CodeCoverageSpec
+ * @covers \Doyo\Bridge\CodeCoverage\CodeCoverage
+ */
 class CodeCoverageSpec extends ObjectBehavior
 {
     function let(
