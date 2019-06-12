@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Doyo\Bridge\CodeCoverage\Controller;
+namespace Spec\Doyo\Bridge\CodeCoverage\Controller;
 
 use Doyo\Bridge\CodeCoverage\Controller\RemoteController;
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
@@ -19,7 +19,7 @@ use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\Session\SessionInterface;
 use PhpSpec\ObjectBehavior;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use spec\Doyo\Bridge\CodeCoverage\ResponseTrait;
+use Spec\Doyo\Bridge\CodeCoverage\ResponseTrait;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

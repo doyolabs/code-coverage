@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Doyo\Bridge\CodeCoverage;
+namespace Spec\Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 use Doyo\Bridge\CodeCoverage\CodeCoverage;
@@ -8,7 +8,7 @@ use Doyo\Bridge\CodeCoverage\Environment\RuntimeInterface;
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
-use spec\Doyo\Bridge\CodeCoverage\TestSubscriber;
+use Spec\Doyo\Bridge\CodeCoverage\TestSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Doyo\Bridge\CodeCoverage\Event;
+namespace Spec\Doyo\Bridge\CodeCoverage\Event;
 
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 use Doyo\Bridge\CodeCoverage\Environment\RuntimeInterface;

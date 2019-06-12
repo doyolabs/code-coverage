@@ -1,7 +1,7 @@
 <?php
 
 
-namespace spec\Doyo\Bridge\CodeCoverage\Report;
+namespace Spec\Doyo\Bridge\CodeCoverage\Report;
 
 
 use Doyo\Bridge\CodeCoverage\Report\AbstractReportProcessor;

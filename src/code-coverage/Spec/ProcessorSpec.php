@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Doyo\Bridge\CodeCoverage;
+namespace Spec\Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\Processor;

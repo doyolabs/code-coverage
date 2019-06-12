@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Doyo\Bridge\CodeCoverage\Console;
+namespace Spec\Doyo\Bridge\CodeCoverage\Console;
 
 use Doyo\Bridge\CodeCoverage\Console\Console;
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
