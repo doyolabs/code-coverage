@@ -7,6 +7,7 @@ use Doyo\Bridge\CodeCoverage\ContainerFactory;
 use Doyo\PhpSpec\CodeCoverage\Listener\CoverageListener;
 use PhpSpec\Extension as ExtensionInterface;
 use PhpSpec\ServiceContainer;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 class Extension implements ExtensionInterface
@@ -14,6 +15,13 @@ class Extension implements ExtensionInterface
     public function load(ServiceContainer $container, array $params)
     {
         $this->addCoverageOptions($container);
+
+        /* @var InputInterface $input */
+        $input = $container->get('console.input');
+
+        if(false===$input->hasParameterOption(['--coverage'],false)){
+            return;
+        }
 
         $container->define('doyo.coverage.container',function($container) use($params){
             $coverageContainer = (new ContainerFactory($params, true))->getContainer();
