@@ -22,16 +22,16 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Doyo\\Bridge\\CodeCoverage\\": "src/code-coverage",
-            "Doyo\\Behat\\CodeCoverage\\": "src/behat-extension",
-            "Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec-extension"
+            "Doyo\\Bridge\\CodeCoverage\\": "src/bridge",
+            "Doyo\\Behat\\CodeCoverage\\": "src/behat",
+            "Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spec\\Doyo\\Bridge\\CodeCoverage\\": "src/code-coverage/Spec",
-            "Spec\\Doyo\\Behat\\CodeCoverage\\": "src/behat-extension/Spec",
-            "Spec\\Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec-extension/Spec"
+            "Spec\\Doyo\\Bridge\\CodeCoverage\\": "src/bridge/Spec",
+            "Spec\\Doyo\\Behat\\CodeCoverage\\": "src/behat/Spec",
+            "Spec\\Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec/Spec"
         }
     },
     "replace": {

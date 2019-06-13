@@ -18,6 +18,9 @@ default:
                       - src/*/Resources
                       - src/*/Context
                       - src/*/Spec
+                      - src/*/vendor
+                      - src/*/build
+                      - file: src/*/RoboFile.php
             reports:
                 html: build/behat
                 php: build/cov/behat.cov
