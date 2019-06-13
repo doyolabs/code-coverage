@@ -1,0 +1,23 @@
+formatter.name: dot
+suites:
+    code_coverage:
+        namespace: Doyo\Bridge\CodeCoverage
+        psr4_prefix: Doyo\Bridge\CodeCoverage
+        spec_prefix: Spec
+        src_path: ""
+
+extensions:
+    Doyo\PhpSpec\CodeCoverage\Extension:
+        filter:
+            - directory: ""
+              exclude:
+                  - Spec
+                  - Resources
+                  - Context
+                  - Driver
+                  - vendor
+                  - build
+                  - file: RoboFile.php
+        reports:
+            php: build/cov/phpspec.cov
+            html: build/phpspec
