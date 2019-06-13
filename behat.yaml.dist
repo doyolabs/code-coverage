@@ -20,7 +20,9 @@ default:
                       - src/*/Spec
                       - src/*/vendor
                       - src/*/build
-                      - file: src/*/RoboFile.php
+                      - file: src/bridge/RoboFile.php
+                      - file: src/phpspec/RoboFile.php
+                      - file: src/behat/RoboFile.php
             reports:
                 html: build/behat
-                php: build/cov/behat.cov
+                php: build/cov/01-behat.cov
