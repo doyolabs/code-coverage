@@ -1,21 +1,26 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
-use Doyo\Bridge\CodeCoverage\DependencyInjection\CodeCoverageExtension;
 use Doyo\Bridge\CodeCoverage\Environment\RuntimeInterface;
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
 use Doyo\Symfony\Bridge\EventDispatcher\EventDispatcher;
-use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 /**
  * A main code coverage actions that contain main processor
- * for collecting code coverage
+ * for collecting code coverage.
  */
 class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
 {
@@ -30,18 +35,16 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
         ProcessorInterface $processor,
         ConsoleIO $consoleIO,
         RuntimeInterface $runtime
-    )
-    {
+    ) {
         $this->coverageEvent = new CoverageEvent($processor, $consoleIO, $runtime);
         parent::__construct();
     }
-
 
     public function refresh(): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
 
-        if($coverageEvent->canCollectCodeCoverage()){
+        if ($coverageEvent->canCollectCodeCoverage()) {
             $coverageEvent->getProcessor()->clear();
             $this->dispatch($coverageEvent, CoverageEvent::refresh);
         }
@@ -53,7 +56,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
     {
         $coverageEvent = $this->coverageEvent;
 
-        if($coverageEvent->canCollectCodeCoverage()){
+        if ($coverageEvent->canCollectCodeCoverage()) {
             $coverageEvent->getProcessor()->start($testCase);
             $this->dispatch($coverageEvent, CoverageEvent::beforeStart);
             $this->dispatch($coverageEvent, CoverageEvent::start);
@@ -65,7 +68,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
     public function stop(): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
-        if($coverageEvent->canCollectCodeCoverage()){
+        if ($coverageEvent->canCollectCodeCoverage()) {
             $coverageEvent->getProcessor()->stop();
             $this->dispatch($coverageEvent, CoverageEvent::stop);
         }
@@ -76,13 +79,13 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
     public function complete(): CoverageEvent
     {
         $coverageEvent = $this->coverageEvent;
-        $consoleIO = $coverageEvent->getConsoleIO();
+        $consoleIO     = $coverageEvent->getConsoleIO();
 
-        if($coverageEvent->canCollectCodeCoverage()){
+        if ($coverageEvent->canCollectCodeCoverage()) {
             $coverageEvent->getProcessor()->complete();
             $this->dispatch($coverageEvent, CoverageEvent::complete);
             $this->dispatch($coverageEvent, CoverageEvent::report);
-        }else{
+        } else {
             $consoleIO->coverageError('Can not create coverage report. No code coverage driver available');
         }
 
@@ -93,7 +96,7 @@ class CodeCoverage extends EventDispatcher implements CodeCoverageInterface
     {
         $coverageEvent = $this->coverageEvent;
 
-        if($coverageEvent->canCollectCodeCoverage()){
+        if ($coverageEvent->canCollectCodeCoverage()) {
             $coverageEvent->getProcessor()->getCurrentTestCase()->setResult($result);
         }
 

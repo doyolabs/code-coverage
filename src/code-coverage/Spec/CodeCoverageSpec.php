@@ -1,59 +1,65 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Spec\Doyo\Bridge\CodeCoverage;
 
-use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 use Doyo\Bridge\CodeCoverage\CodeCoverage;
+use Doyo\Bridge\CodeCoverage\Console\ConsoleIO;
 use Doyo\Bridge\CodeCoverage\Environment\RuntimeInterface;
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
-use Spec\Doyo\Bridge\CodeCoverage\TestSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Webmozart\Assert\Assert;
 
 /**
- * Class CodeCoverageSpec
+ * Class CodeCoverageSpec.
+ *
  * @covers \Doyo\Bridge\CodeCoverage\CodeCoverage
  */
 class CodeCoverageSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ProcessorInterface $processor,
         ConsoleIO $consoleIO,
         RuntimeInterface $runtime,
         TestSubscriber $subscriber
-    )
-    {
+    ) {
         $this->beConstructedWith($processor, $consoleIO, $runtime);
         $runtime->canCollectCodeCoverage()->willReturn(true);
         $this->addSubscriber($subscriber);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(CodeCoverage::class);
     }
 
-    function it_should_dispatch_coverage_refresh_event(
+    public function it_should_dispatch_coverage_refresh_event(
         ProcessorInterface $processor,
         TestSubscriber $subscriber
-    )
-    {
+    ) {
         $processor->clear()->shouldBeCalledOnce();
         $subscriber->refresh(Argument::cetera())->shouldBeCalledOnce();
 
         $this->refresh();
     }
 
-    function it_should_dispatch_coverage_event_start(
+    public function it_should_dispatch_coverage_event_start(
         ProcessorInterface $processor,
         TestCase $testCase,
         TestSubscriber $subscriber
-    )
-    {
+    ) {
         $subscriber->beforeStart(Argument::cetera())->shouldBeCalled();
         $subscriber->start(Argument::cetera())->shouldBeCalled();
 
@@ -62,11 +68,10 @@ class CodeCoverageSpec extends ObjectBehavior
         $this->start($testCase);
     }
 
-    function it_should_dispatch_coverage_event_stop(
+    public function it_should_dispatch_coverage_event_stop(
         ProcessorInterface $processor,
         TestSubscriber $subscriber
-    )
-    {
+    ) {
         $processor->stop()->shouldBeCalledOnce();
         $subscriber
             ->stop(Argument::type(CoverageEvent::class), Argument::cetera())
@@ -75,11 +80,10 @@ class CodeCoverageSpec extends ObjectBehavior
         $this->stop();
     }
 
-    function it_should_dispatch_coverage_event_complete(
+    public function it_should_dispatch_coverage_event_complete(
         ProcessorInterface $processor,
         TestSubscriber $subscriber
-    )
-    {
+    ) {
         $processor->complete()->shouldBeCalledOnce();
         $subscriber->complete(Argument::cetera())->shouldBeCalledOnce();
         $this->complete()->shouldHaveType(CoverageEvent::class);

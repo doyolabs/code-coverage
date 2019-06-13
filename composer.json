@@ -31,7 +31,7 @@
         "psr-4": {
             "Spec\\Doyo\\Bridge\\CodeCoverage\\": "src/code-coverage/Spec",
             "Spec\\Doyo\\Behat\\CodeCoverage\\": "src/behat-extension/Spec",
-            "Spec\\Doyo\\PhpSpec\\CodeCoverage\\": "src/php-extension/Spec"
+            "Spec\\Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec-extension/Spec"
         }
     },
     "replace": {

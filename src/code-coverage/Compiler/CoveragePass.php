@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Compiler;
 
@@ -22,9 +32,9 @@ class CoveragePass implements CompilerPassInterface
         $container->getParameterBag()->set('coverage.driver.class', $driverClass);
 
         $r = new \ReflectionClass($driverClass);
-        if($r->hasMethod('setFilter')){
+        if ($r->hasMethod('setFilter')) {
             $definition = $container->getDefinition('coverage.filter');
-            $definition->addMethodCall('setFilter',[new Reference('coverage.filter')]);
+            $definition->addMethodCall('setFilter', [new Reference('coverage.filter')]);
         }
     }
 
@@ -34,11 +44,11 @@ class CoveragePass implements CompilerPassInterface
         $definition = $container->getDefinition('coverage.filter');
 
         foreach ($config as $options) {
-            $options['basePath'] = "";
+            $options['basePath'] = '';
             $this->filterWhitelist($definition, $options, 'add');
             $exclude = $options['exclude'];
             foreach ($exclude as $item) {
-                $item['basePath'] = "";
+                $item['basePath'] = '';
                 $this->filterWhitelist($definition, $item, 'remove');
             }
         }

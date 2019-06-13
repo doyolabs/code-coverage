@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Context;
-
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
@@ -32,13 +41,13 @@ class ContainerContext implements Context
     public function iConfigureCodeCoverage(PyStringNode $node = null)
     {
         $config = [];
-        if(!is_null($node)){
+        if (null !== $node) {
             $config = Yaml::parse($node->getRaw());
         }
 
         $container = (new ContainerFactory($config, true))->getContainer();
         $container->set('console.input', new StringInput(''));
-        $container->set('console.output', new StreamOutput(fopen('php://memory','+w')));
+        $container->set('console.output', new StreamOutput(fopen('php://memory', '+w')));
 
         $this->container = $container;
     }
@@ -55,7 +64,7 @@ class ContainerContext implements Context
             'Service '.$name.' is not defined'
         );
         Assert::true(
-            is_object($this->container->get($name)),
+            \is_object($this->container->get($name)),
             'Failed to create object for service '.$name
         );
     }
@@ -69,11 +78,11 @@ class ContainerContext implements Context
     {
         Assert::true(
             $this->container->has($name),
-            'Service '.$name. ' is not defined'
+            'Service '.$name.' is not defined'
         );
         Assert::false(
             $this->container->get($name),
-            'Service '.$name. ' should not loaded'
+            'Service '.$name.' should not loaded'
         );
     }
 }

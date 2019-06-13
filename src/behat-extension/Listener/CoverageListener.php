@@ -1,14 +1,23 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Doyo\Behat\CodeCoverage\Listener;
 
 use Behat\Behat\EventDispatcher\Event\ExampleTested;
 use Behat\Behat\EventDispatcher\Event\ScenarioTested;
-use Behat\Behat\Hook\Scope\ScenarioScope;
 use Behat\Testwork\EventDispatcher\Event\AfterTested;
 use Behat\Testwork\EventDispatcher\Event\ExerciseCompleted;
 use Behat\Testwork\Tester\Result\TestResult;
-use Doyo\Behat\Coverage\Event\CoverageEvent;
 use Doyo\Bridge\CodeCoverage\CodeCoverageInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,10 +37,9 @@ class CoverageListener implements EventSubscriberInterface
     public function __construct(
         CodeCoverageInterface $coverage,
         bool $enabled
-    )
-    {
+    ) {
         $this->coverage = $coverage;
-        $this->enabled = $enabled;
+        $this->enabled  = $enabled;
     }
 
     public static function getSubscribedEvents()
@@ -48,7 +56,7 @@ class CoverageListener implements EventSubscriberInterface
 
     public function refresh()
     {
-        if(!$this->enabled){
+        if (!$this->enabled) {
             return;
         }
 
@@ -57,7 +65,7 @@ class CoverageListener implements EventSubscriberInterface
 
     public function start(ScenarioTested $scenarioTested)
     {
-        if(!$this->enabled){
+        if (!$this->enabled) {
             return;
         }
 
@@ -70,7 +78,7 @@ class CoverageListener implements EventSubscriberInterface
 
     public function stop(AfterTested $tested)
     {
-        if(!$this->enabled){
+        if (!$this->enabled) {
             return;
         }
 
@@ -80,7 +88,7 @@ class CoverageListener implements EventSubscriberInterface
             TestResult::SKIPPED => TestCase::RESULT_SKIPPED,
             TestResult::PENDING => TestCase::RESULT_SKIPPED,
         ];
-        $result = $map[$tested->getTestResult()->getResultCode()];
+        $result   = $map[$tested->getTestResult()->getResultCode()];
         $coverage = $this->coverage;
         $coverage->setResult($result);
         $coverage->stop();
@@ -88,12 +96,10 @@ class CoverageListener implements EventSubscriberInterface
 
     public function complete()
     {
-        if(!$this->enabled){
+        if (!$this->enabled) {
             return;
         }
 
         $this->coverage->complete();
     }
-
-
 }

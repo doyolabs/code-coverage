@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
@@ -16,7 +27,7 @@ class Report implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoverageEvent::report => 'generate'
+            CoverageEvent::report => 'generate',
         ];
     }
 
@@ -31,7 +42,7 @@ class Report implements EventSubscriberInterface
     public function addProcessor(ReportProcessorInterface $processor)
     {
         $type = $processor->getType();
-        if(!$this->hasProcessor($type)){
+        if (!$this->hasProcessor($type)) {
             $this->processors[$type] = $processor;
         }
     }
@@ -48,7 +59,7 @@ class Report implements EventSubscriberInterface
 
         $consoleIO->coverageSection('processing code coverage reports');
 
-        foreach($this->processors as $reportProcessor){
+        foreach ($this->processors as $reportProcessor) {
             $reportProcessor->process($processor, $consoleIO);
         }
     }

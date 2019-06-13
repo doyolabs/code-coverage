@@ -1,45 +1,54 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <me@itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Spec\Doyo\Bridge\CodeCoverage\Report;
 
 use Doyo\Bridge\CodeCoverage\Report\AbstractReportProcessor;
 use Doyo\Bridge\CodeCoverage\Report\Html;
 use Doyo\Bridge\CodeCoverage\Report\ReportProcessorInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReportProcessor;
 
 class HtmlSpec extends ObjectBehavior
 {
     protected $tempDir;
 
-    function let()
+    public function let()
     {
         $this->tempDir = sys_get_temp_dir().'/doyo/test-report';
 
         $options = [
-            'target' => $this->tempDir,
-            'type' => 'html',
+            'target'         => $this->tempDir,
+            'type'           => 'html',
             'fileSystemType' => 'dir',
-            'lowUpperBound' => 20,
+            'lowUpperBound'  => 20,
             'highLowerBound' => 90,
-            'generator' => 'some-generator'
+            'generator'      => 'some-generator',
         ];
         $this->beConstructedWith($options);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(Html::class);
     }
 
-    function it_should_be_a_report_processor()
+    public function it_should_be_a_report_processor()
     {
         $this->shouldBeAnInstanceOf(AbstractReportProcessor::class);
         $this->shouldImplement(ReportProcessorInterface::class);
     }
 
-    function it_should_be_create_processor_properly()
+    public function it_should_be_create_processor_properly()
     {
         $this->getType()->shouldReturn('html');
         $this->getTarget()->shouldReturn($this->tempDir);
