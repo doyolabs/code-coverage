@@ -25,4 +25,4 @@ default:
                       - file: src/behat/RoboFile.php
             reports:
                 html: build/behat
-                php: build/cov/01-behat.cov
+                php: build/cov/02-behat.cov

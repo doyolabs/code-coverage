@@ -35,5 +35,5 @@ extensions:
                 - file: src/phpspec/RoboFile.php
                 - file: src/behat/RoboFile.php
         reports:
-            php: build/cov/02-phpspec.cov
+            php: build/cov/01-phpspec.cov
             html: build/phpspec
