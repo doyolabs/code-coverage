@@ -22,9 +22,11 @@ default:
                 index: ~
                 live: ~
             filter:
-                - directory: src/*.php
+                - directory: ""
                   exclude:
-                      - src/Resources
+                      - Resources
+                      - Context
+                      - Spec
             report:
                 php: build/cov/02-behat.cov
                 html:
