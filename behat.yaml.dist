@@ -18,6 +18,11 @@ default:
                       - src/*/Resources
                       - src/*/Context
                       - src/*/Spec
+                      - src/*/vendor
+                      - src/*/build
+                      - file: src/bridge/RoboFile.php
+                      - file: src/phpspec/RoboFile.php
+                      - file: src/behat/RoboFile.php
             reports:
                 html: build/behat
-                php: build/cov/behat.cov
+                php: build/cov/02-behat.cov

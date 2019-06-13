@@ -56,14 +56,20 @@ class CoveragePass implements CompilerPassInterface
 
     private function filterWhitelist(Definition $definition, $options, $method)
     {
-        $basePath  = $options['basePath'];
         $suffix    = $options['suffix'] ?: '.php';
         $prefix    = $options['prefix'] ?: '';
-        $type      = $options['directory'] ? 'directory' : 'file';
         $directory = $options['directory'];
         $file      = $options['file'];
+        $type      = !is_null($options['directory']) ? 'directory' : 'file';
 
-        if (preg_match('/\/\*(\..+)/', $directory, $matches)) {
+        if(!is_null($directory) && "" === $directory){
+            $directory = getcwd();
+        }
+        
+        if (
+            !is_null($directory)
+            && preg_match('/\/\*(\..+)/', $directory, $matches)
+        ) {
             $suffix    = $matches[1];
             $directory = str_replace($matches[0], '', $directory);
         }

@@ -1,0 +1,18 @@
+default:
+    suites:
+        default:
+            paths:
+                - Resources/features
+            contexts:
+                - Doyo\Bridge\CodeCoverage\Context\ContainerContext
+    extensions:
+        Doyo\Behat\CodeCoverage\Extension:
+            filter:
+                - directory: ""
+                  exclude:
+                      - vendor
+                      - build
+                      - Spec
+                      - Resources
+                      - Context
+                      - file: RoboFile.php

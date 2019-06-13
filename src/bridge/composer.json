@@ -1,6 +1,6 @@
 {
-    "name": "doyo/code-coverage",
-    "description": "Add a functionality to customize phpunit/php-code-coverage",
+    "name": "doyo/code-coverage-bridge",
+    "description": "An easy way to integrate code coverage into your project/testing tools",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -22,16 +22,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Doyo\\Bridge\\CodeCoverage\\": "src/bridge",
-            "Doyo\\Behat\\CodeCoverage\\": "src/behat",
-            "Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec"
+            "Doyo\\Bridge\\CodeCoverage\\": ""
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spec\\Doyo\\Bridge\\CodeCoverage\\": "src/bridge/Spec",
-            "Spec\\Doyo\\Behat\\CodeCoverage\\": "src/behat/Spec",
-            "Spec\\Doyo\\PhpSpec\\CodeCoverage\\": "src/phpspec/Spec"
+            "Spec\\Doyo\\Bridge\\CodeCoverage\\": "Spec"
         }
     },
     "replace": {
@@ -39,19 +35,21 @@
     },
     "require": {
         "php": ">=7.0",
-        "phpunit/php-code-coverage": "^4.3 | >=5.0",
-        "sebastian/environment": "^3.1 | ^4.2",
+        "behat/behat": "^3.5",
         "doyo/symfony-bridge": "^1.0@dev",
-        "symfony/event-dispatcher": "^3.4 | ^4.0",
-        "symfony/dependency-injection": "^3.4 | ^4.0",
+        "phpunit/php-code-coverage": "^4.3 | >=5.0",
+        "psr/http-message": "^1.0",
+        "sebastian/environment": "^3.1 | ^4.2",
         "symfony/config": "^3.4 | ^4.0",
-        "behat/behat": "^3.5"
+        "symfony/dependency-injection": "^3.4 | ^4.0",
+        "symfony/event-dispatcher": "^3.4 | ^4.0"
     },
     "require-dev": {
+        "doyo/behat-code-coverage": "^1.0@dev",
+        "doyo/phpspec-code-coverage": "^1.0@dev",
         "guzzlehttp/guzzle": "^6.3",
         "phpspec/phpspec": "^4.3 | ^5.0",
         "phpunit/phpcov": "^4.0 | >=5.0",
-        "phpunit/phpunit": ">=6.0",
         "symfony/cache": "^3.4",
         "symfony/console": "^3.4 | ^4.3",
         "symfony/http-foundation": "^3.4 | ^4.3",

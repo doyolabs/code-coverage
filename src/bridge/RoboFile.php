@@ -105,7 +105,7 @@ class RoboFile extends Tasks
             ->option('clover', 'build/logs/clover.xml')
             ->option('html', 'build/html')
             ->option('ansi')
-            ->arg(__DIR__.'/build/cov')
+            ->arg('build/cov')
             ->run();
     }
 
