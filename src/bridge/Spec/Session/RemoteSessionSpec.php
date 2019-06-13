@@ -42,17 +42,7 @@ class RemoteSessionSpec extends ObjectBehavior
 
     public function it_should_init_coverage_session()
     {
-        $config =[
-            'filterOptions' => [
-                'whitelistedFiles' => [
-                    __FILE__ => true,
-                ],
-            ],
-            'codeCoverageOptions' => [
-                'addUncoveredFilesFromWhitelist' => false,
-            ],
-        ];
-        $this->init($config);
+        $this->init([]);
         $processor = $this->getProcessor();
         $processor->shouldHaveType(Processor::class);
         $processor->getCodeCoverageOptions()->shouldHaveKeyWithValue('addUncoveredFilesFromWhitelist', false);

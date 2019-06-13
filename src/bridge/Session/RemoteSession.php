@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Session;
 
+use Doyo\Bridge\CodeCoverage\ContainerFactory;
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\Processor;
 use Doyo\Bridge\CodeCoverage\TestCase;
@@ -22,6 +23,11 @@ class RemoteSession extends Session
 {
     const HEADER_SESSION_KEY   = 'HTTP_DOYO_COVERAGE_SESSION';
     const HEADER_TEST_CASE_KEY = 'HTTP_DOYO_COVERAGE_TESTCASE';
+
+    public function __construct($name, array $config)
+    {
+        parent::__construct($name);
+    }
 
     public static function startSession()
     {
@@ -41,7 +47,7 @@ class RemoteSession extends Session
         return true;
     }
 
-    public function init(array $config)
+    public function oldInit(array $config)
     {
         $filter = new Filter();
         if (isset($config['filterOptions'])) {
@@ -59,6 +65,11 @@ class RemoteSession extends Session
         }
         $this->setProcessor($processor);
         $this->reset();
+    }
+
+    public function init($name, array $config)
+    {
+        $container = (new ContainerFactory($config))->getContainer();
     }
 
     public function doStartSession()

@@ -15,6 +15,8 @@ namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Code coverage session.
@@ -27,6 +29,14 @@ interface SessionInterface
      * @param bool $flag
      */
     public function setPatchXdebug(bool $flag);
+    
+    /**
+     * Set code coverage to use
+     *
+     * @param CodeCoverage $coverage
+     * @return void
+     */
+    public function setCodeCoverage(CodeCoverage $coverage);
 
     /**
      * Returns current session name.
@@ -94,4 +104,6 @@ interface SessionInterface
      * @return array
      */
     public function stop();
+
+    public function setContainer(ContainerInterface $container);
 }

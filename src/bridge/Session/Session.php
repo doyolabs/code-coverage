@@ -66,15 +66,18 @@ abstract class Session implements \Serializable, SessionInterface
      */
     protected $codeCoverage;
 
-    protected $patchXdebug = true;
+    /**
+     * @var array
+     */
+    protected $config;
 
-    public function __construct($name, $patchXdebug = true)
+    public function __construct($name, array $config = array())
     {
-        $dir               = sys_get_temp_dir().'/doyo/behat-coverage-extension';
-        $adapter           = new FilesystemAdapter($name, 0, $dir);
-        $this->adapter     = $adapter;
-        $this->name        = $name;
-        $this->patchXdebug = $patchXdebug;
+        $dir = sys_get_temp_dir().'/doyo/behat-coverage-extension';
+        $adapter = new FilesystemAdapter($name, 0, $dir);
+        $this->adapter = $adapter;
+        $this->name = $name;
+        $this->config = $config;
         $this->refresh();
     }
 

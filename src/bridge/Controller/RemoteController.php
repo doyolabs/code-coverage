@@ -82,7 +82,7 @@ class RemoteController
         $config = json_decode($config, true);
 
         $session = new RemoteSession($name);
-        $session->init($config);
+        $session->init($name, $config);
 
         $data = [
             'message' => 'coverage session: '.$name.' initialized.',
