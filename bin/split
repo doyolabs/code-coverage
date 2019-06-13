@@ -22,6 +22,6 @@ remote code-coverage-bridge git@github.com:doyolabs/code-coverage-bridge.git
 remote behat-code-coverage git@github.com:doyolabs/behat-code-coverage.git
 remote phpspec-code-coverage git@github.com:doyolabs/phpspec-code-coverage.git
 
-split 'src/behat-extension' behat-code-coverage
-split 'src/code-coverage' code-coverage-bridge
-split 'src/phpspec-extension' phpspec-code-coverage
+split 'src/behat' behat-code-coverage
+split 'src/bridge' code-coverage-bridge
+split 'src/phpspec' phpspec-code-coverage
