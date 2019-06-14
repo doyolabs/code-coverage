@@ -3,7 +3,7 @@
 /*
  * This file is part of the doyo/code-coverage project.
  *
- * (c) Anthonius Munthi <me@itstoni.com>
+ * (c) Anthonius Munthi <https://itstoni.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Spec\Doyo\Bridge\CodeCoverage\Controller;
 
 use Doyo\Bridge\CodeCoverage\Controller\RemoteController;
-use Doyo\Bridge\CodeCoverage\Driver\Dummy;
-use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
 use Doyo\Bridge\CodeCoverage\Session\SessionInterface;
 use PhpSpec\ObjectBehavior;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Spec\Doyo\Bridge\CodeCoverage\ResponseTrait;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;

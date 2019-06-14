@@ -3,7 +3,7 @@
 /*
  * This file is part of the doyo/code-coverage project.
  *
- * (c) Anthonius Munthi <me@itstoni.com>
+ * (c) Anthonius Munthi <https://itstoni.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -54,7 +54,7 @@ final class Runtime implements RuntimeInterface
         if (
             version_compare(PHP_VERSION, '7.0', '>')
             && $this->hasPCOV()
-        ){
+        ) {
             //$driverClass = PCOV::class;
         }
 
@@ -68,7 +68,7 @@ final class Runtime implements RuntimeInterface
 
     public function hasPCOV()
     {
-        return $this->isPHP() && \extension_loaded('pcov') && \ini_get('pcov.enabled');
+        return $this->isPHP() && \extension_loaded('pcov') && ini_get('pcov.enabled');
     }
 
     /**

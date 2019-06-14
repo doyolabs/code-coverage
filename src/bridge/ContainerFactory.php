@@ -3,7 +3,7 @@
 /*
  * This file is part of the doyo/code-coverage project.
  *
- * (c) Anthonius Munthi <me@itstoni.com>
+ * (c) Anthonius Munthi <https://itstoni.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,11 +17,6 @@ use Doyo\Bridge\CodeCoverage\Compiler\CoveragePass;
 use Doyo\Bridge\CodeCoverage\Compiler\ReportPass;
 use Doyo\Bridge\CodeCoverage\Console\Application;
 use Doyo\Bridge\CodeCoverage\DependencyInjection\CodeCoverageExtension;
-use Doyo\Bridge\CodeCoverage\Driver\Dummy;
-use Doyo\Bridge\CodeCoverage\Exception\SessionException;
-use Doyo\Bridge\CodeCoverage\Session\LocalSession;
-use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
-use Doyo\Bridge\CodeCoverage\Session\SessionInterface;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -50,7 +45,7 @@ class ContainerFactory
      */
     public function getContainer(): ContainerInterface
     {
-        if(is_null($this->container)){
+        if (null === $this->container) {
             $this->doCreateContainer();
         }
 
@@ -59,30 +54,29 @@ class ContainerFactory
 
     /**
      * @param bool $useDummyDriver
+     *
      * @return ProcessorInterface
      */
     public function createProcessor(bool $useDummyDriver = false): ProcessorInterface
     {
         $coverage = $this->createCodeCoverage($useDummyDriver);
-        $processor = new Processor($coverage);
 
-        return $processor;
+        return new Processor($coverage);
     }
 
     public function createCodeCoverage(bool $useDummyDriver = false)
     {
-        $container = $this->container;
+        $container   = $this->container;
         $driverClass = $container->getParameter('coverage.driver.class');
 
-        if($useDummyDriver){
+        if ($useDummyDriver) {
             $driverClass = $container->getParameter('coverage.driver.dummy.class');
         }
 
-        $driver = new $driverClass;
+        $driver = new $driverClass();
         $filter = $container->get('coverage.filter');
-        $coverage = new \SebastianBergmann\CodeCoverage\CodeCoverage($driver, $filter);
 
-        return $coverage;
+        return new \SebastianBergmann\CodeCoverage\CodeCoverage($driver, $filter);
     }
 
     public function createApplication($version = 'dev')
@@ -92,10 +86,10 @@ class ContainerFactory
 
     private function doCreateContainer()
     {
-        $config = $this->config;
+        $config  = $this->config;
         $configs = [];
 
-        if(isset($config['imports'])){
+        if (isset($config['imports'])) {
             $configs = $this->normalizeConfig($config);
             unset($config['imports']);
         }
@@ -103,30 +97,29 @@ class ContainerFactory
         $configs[] = $config;
 
         $debug = false;
-        foreach($configs as $config){
-            if(isset($config['debug'])){
+        foreach ($configs as $config) {
+            if (isset($config['debug'])) {
                 $debug = $config['debug'];
             }
         }
 
-        $id    = md5(serialize($configs));
-        $file  = sys_get_temp_dir().'/doyo/coverage/container'.$id.'.php';
-        $class = 'CodeCoverageContainer'.$id;
+        $id              = md5(serialize($configs));
+        $file            = sys_get_temp_dir().'/doyo/coverage/container'.$id.'.php';
+        $class           = 'CodeCoverageContainer'.$id;
         $cachedContainer = new ConfigCache($file, $debug);
-        $debug = true;
+        $debug           = true;
         if (!$cachedContainer->isFresh() || $debug) {
             //$this->dumpConfig();
             $builder = new ContainerBuilder();
 
             $builder->registerExtension(new CodeCoverageExtension());
-            foreach($configs as $config){
+            foreach ($configs as $config) {
                 $builder->loadFromExtension('coverage', $config);
             }
 
             $builder->addCompilerPass(new CoveragePass());
             $builder->addCompilerPass(new ReportPass());
             $builder->compile(true);
-
 
             $dumper = new PhpDumper($builder);
             $cachedContainer->write(
@@ -139,7 +132,7 @@ class ContainerFactory
 
         require_once $file;
 
-        /* @var \Symfony\Component\DependencyInjection\ContainerInterface $container */
+        /** @var \Symfony\Component\DependencyInjection\ContainerInterface $container */
         $container =  new $class();
         $container->set('factory', $this);
 
@@ -149,7 +142,7 @@ class ContainerFactory
     private function normalizeConfig($configuration)
     {
         $configs = [];
-        foreach($configuration['imports'] as $file){
+        foreach ($configuration['imports'] as $file) {
             $configs[] = $this->importFile($file);
         }
 
@@ -158,7 +151,6 @@ class ContainerFactory
 
     private function importFile($file)
     {
-        $config = Yaml::parseFile($file);
-        return $config;
+        return Yaml::parseFile($file);
     }
 }

@@ -3,7 +3,7 @@
 /*
  * This file is part of the doyo/code-coverage project.
  *
- * (c) Anthonius Munthi <me@itstoni.com>
+ * (c) Anthonius Munthi <https://itstoni.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Spec\Doyo\Bridge\CodeCoverage;
 
-use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\Processor;
 use Doyo\Bridge\CodeCoverage\TestCase;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +25,7 @@ class ProcessorSpec extends ObjectBehavior
     public function let(
         Driver $driver
     ) {
-        $filter = new Filter();
+        $filter    = new Filter();
         $coverage  = new CodeCoverage($driver->getWrappedObject(), $filter);
         $filter->addFileToWhitelist(__FILE__);
         $this->beConstructedWith($coverage);

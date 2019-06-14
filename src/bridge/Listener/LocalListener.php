@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <https://itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Doyo\Bridge\CodeCoverage\Listener;
 
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
@@ -9,9 +20,9 @@ class LocalListener extends AbstractSessionListener
     public static function getSubscribedEvents()
     {
         return [
-            CoverageEvent::refresh => 'refresh',
-            CoverageEvent::start => 'start',
-            CoverageEvent::complete => 'complete'
+            CoverageEvent::refresh  => 'refresh',
+            CoverageEvent::start    => 'start',
+            CoverageEvent::complete => 'complete',
         ];
     }
 
@@ -22,7 +33,7 @@ class LocalListener extends AbstractSessionListener
 
     public function start(CoverageEvent $event)
     {
-        $session = $this->session;
+        $session  = $this->session;
         $testCase = $event->getProcessor()->getCurrentTestCase();
 
         $session->setTestCase($testCase);
@@ -31,7 +42,7 @@ class LocalListener extends AbstractSessionListener
 
     public function complete(CoverageEvent $event)
     {
-        $session = $this->session;
+        $session   = $this->session;
         $processor = $event->getProcessor();
         $consoleIO = $event->getConsoleIO();
 
@@ -40,9 +51,8 @@ class LocalListener extends AbstractSessionListener
 
         $processor->merge($session->getProcessor());
 
-        if($session->hasExceptions()){
-
-            foreach($session->getExceptions() as $exception){
+        if ($session->hasExceptions()) {
+            foreach ($session->getExceptions() as $exception) {
                 $consoleIO->coverageInfo($exception->getMessage());
             }
         }

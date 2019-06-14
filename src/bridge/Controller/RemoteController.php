@@ -3,7 +3,7 @@
 /*
  * This file is part of the doyo/code-coverage project.
  *
- * (c) Anthonius Munthi <me@itstoni.com>
+ * (c) Anthonius Munthi <https://itstoni.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Doyo\Bridge\CodeCoverage\Controller;
 
 use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
-use Spec\Doyo\Bridge\CodeCoverage\ResponseTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Test\Constraint\ResponseHasCookie;
 
 class RemoteController
 {
@@ -82,25 +80,25 @@ class RemoteController
         $name   = $request->get('session');
         $config = $request->getContent();
         $config = json_decode($config, true);
-        $error = 'Failed to create session: <comment>'.$name.'</comment>';
+        $error  = 'Failed to create session: <comment>'.$name.'</comment>';
 
-        try{
+        try {
             $session = new RemoteSession($name);
             $session->init($config);
             $created = true;
-        }catch (\Exception $e){
-            $error = $e->getMessage();
+        } catch (\Exception $e) {
+            $error   = $e->getMessage();
             $created = false;
         }
 
         $status = Response::HTTP_ACCEPTED;
-        if($created){
+        if ($created) {
             $data = [
                 'message' => 'coverage session: '.$name.' initialized.',
             ];
-        }else{
+        } else {
             $data = [
-                'message' => $error
+                'message' => $error,
             ];
         }
 

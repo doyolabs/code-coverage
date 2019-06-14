@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <https://itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ContainerFactory;
@@ -63,18 +74,19 @@ abstract class AbstractSession implements SessionInterface, \Serializable
 
     /**
      * AbstractSession constructor.
+     *
      * @param string $name
-     * @param array $config
+     * @param array  $config
      */
     public function __construct(string $name)
     {
-        $dir = sys_get_temp_dir() . '/doyo/code-coverage/sessions';
+        $dir           = sys_get_temp_dir().'/doyo/code-coverage/sessions';
         $this->adapter = new FilesystemAdapter($name, 0, $dir);
         $this->refresh();
 
         $this->name = $name;
 
-        register_shutdown_function([$this,'shutdown']);
+        register_shutdown_function([$this, 'shutdown']);
     }
 
     public function init(array $config)
@@ -89,17 +101,17 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     {
         $data = $this->toCache();
 
-        return \serialize($data);
+        return serialize($data);
     }
 
     public function unserialize($serialized)
     {
-        $cache = \unserialize($serialized);
+        $cache = unserialize($serialized);
         $this->fromCache($cache);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -107,7 +119,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getProcessor()
     {
@@ -126,7 +138,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
 
     private function createContainer($config)
     {
-        $container = (new ContainerFactory($config))->getContainer();
+        $container       = (new ContainerFactory($config))->getContainer();
         $this->container = $container;
     }
 
@@ -134,7 +146,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     {
         $data = [];
 
-        foreach($this->cachedProperties as $property){
+        foreach ($this->cachedProperties as $property) {
             $data[$property] = $this->{$property};
         }
 
@@ -143,10 +155,10 @@ abstract class AbstractSession implements SessionInterface, \Serializable
 
     private function fromCache($cache)
     {
-        if(is_null($cache)){
+        if (null === $cache) {
             return;
         }
-        foreach ($cache as $name => $value){
+        foreach ($cache as $name => $value) {
             $this->{$name} = $value;
         }
     }
@@ -154,8 +166,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     public function save()
     {
         $adapter = $this->adapter;
-        $item = $adapter->getItem(static::CACHE_KEY);
-        $data = $this->toCache();
+        $item    = $adapter->getItem(static::CACHE_KEY);
+        $data    = $this->toCache();
 
         $item->set($data);
         $adapter->save($item);
@@ -171,7 +183,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
 
     public function hasExceptions()
     {
-        return count($this->exceptions) > 0;
+        return \count($this->exceptions) > 0;
     }
 
     public function getExceptions()
@@ -182,9 +194,9 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     public function addException(\Exception $exception)
     {
         $message = $exception->getMessage();
-        $id = md5($message);
+        $id      = md5($message);
 
-        if(!isset($this->exceptions[$id])){
+        if (!isset($this->exceptions[$id])) {
             $this->exceptions[$id] = $exception;
         }
     }
@@ -199,17 +211,17 @@ abstract class AbstractSession implements SessionInterface, \Serializable
      */
     public function start()
     {
-        if(is_null($this->testCase)){
+        if (null === $this->testCase) {
             throw new SessionException('Can not start coverage without null TestCase');
         }
 
-        try{
+        try {
             $container = $this->container;
-            $testCase = $this->testCase;
+            $testCase  = $this->testCase;
             $processor = $container->get('factory')->createProcessor();
             $processor->setCurrentTestCase($testCase);
             $this->currentProcessor = $processor;
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->addException($exception);
         }
     }
@@ -222,7 +234,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
 
     public function shutdown()
     {
-        if(!is_null($this->currentProcessor)){
+        if (null !== $this->currentProcessor) {
             $this->stop();
         }
         $this->save();

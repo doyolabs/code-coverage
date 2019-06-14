@@ -1,32 +1,42 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <https://itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Spec\Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\Session\AbstractSession;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AbstractSessionSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beAnInstanceOf(TestSession::class);
         $this->beConstructedWith('abstract');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AbstractSession::class);
     }
 
-    function it_should_init_session()
+    public function it_should_init_session()
     {
         $config = [
             'filter' => [
                 'whitelist' => [
-                    'directory' => __DIR__
-                ]
-            ]
+                    'directory' => __DIR__,
+                ],
+            ],
         ];
 
         $this->init($config);

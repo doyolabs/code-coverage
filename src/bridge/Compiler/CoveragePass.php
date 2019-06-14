@@ -3,7 +3,7 @@
 /*
  * This file is part of the doyo/code-coverage project.
  *
- * (c) Anthonius Munthi <me@itstoni.com>
+ * (c) Anthonius Munthi <https://itstoni.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -60,14 +60,14 @@ class CoveragePass implements CompilerPassInterface
         $prefix    = $options['prefix'] ?: '';
         $directory = $options['directory'];
         $file      = $options['file'];
-        $type      = !is_null($options['directory']) ? 'directory' : 'file';
+        $type      = null !== $options['directory'] ? 'directory' : 'file';
 
-        if(!is_null($directory) && "" === $directory){
+        if (null !== $directory && '' === $directory) {
             $directory = getcwd();
         }
-        
+
         if (
-            !is_null($directory)
+            null !== $directory
             && preg_match('/\/\*(\..+)/', $directory, $matches)
         ) {
             $suffix    = $matches[1];
@@ -80,12 +80,11 @@ class CoveragePass implements CompilerPassInterface
         }
 
         if ('file' === $type) {
-
             $files = [$file];
 
-            if(false !== ($pos=strpos($file, '*'))){
+            if (false !== ($pos=strpos($file, '*'))) {
                 $files = [];
-                foreach(glob($file) as $filename){
+                foreach (glob($file) as $filename) {
                     $files[] = $filename;
                 }
             }

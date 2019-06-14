@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the doyo/code-coverage project.
+ *
+ * (c) Anthonius Munthi <https://itstoni.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Listener;
 
-
 use Doyo\Bridge\CodeCoverage\Event\CoverageEvent;
-use Doyo\Bridge\CodeCoverage\Exception\HttpException;
 use Doyo\Bridge\CodeCoverage\Http\ClientInterface;
 use Doyo\Bridge\CodeCoverage\Session\SessionInterface;
 
@@ -36,42 +44,41 @@ class RemoteListener extends AbstractSessionListener
         ClientInterface $httpClient,
         string $coverageUrl,
         array $config
-    )
-    {
+    ) {
         parent::__construct($session);
 
-        $this->httpClient = $httpClient;
+        $this->httpClient  = $httpClient;
         $this->coverageUrl = $coverageUrl;
-        $this->config = $config;
-        $this->exceptions = [];
+        $this->config      = $config;
+        $this->exceptions  = [];
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            CoverageEvent::refresh => 'refresh',
-            CoverageEvent::complete => 'complete'
+            CoverageEvent::refresh  => 'refresh',
+            CoverageEvent::complete => 'complete',
         ];
     }
 
     public function refresh()
     {
-        $client = $this->httpClient;
-        $session = $this->session;
-        $body = json_encode($this->config);
+        $client      = $this->httpClient;
+        $session     = $this->session;
+        $body        = json_encode($this->config);
         $coverageUrl = $this->coverageUrl;
 
         $options = [
-            'body' => $body,
+            'body'  => $body,
             'query' => [
-                'action' => 'init',
-                'session' => $session->getName()
-            ]
+                'action'  => 'init',
+                'session' => $session->getName(),
+            ],
         ];
 
-        try{
+        try {
             $client->request('POST', $coverageUrl, $options);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->exceptions[] = $exception;
         }
     }
@@ -79,34 +86,34 @@ class RemoteListener extends AbstractSessionListener
     public function complete(CoverageEvent $event)
     {
         $coverageUrl = $this->coverageUrl;
-        $client = $this->httpClient;
-        $session = $this->session;
-        $consoleIO = $event->getConsoleIO();
+        $client      = $this->httpClient;
+        $session     = $this->session;
+        $consoleIO   = $event->getConsoleIO();
 
         $options = [
             'query' => [
-                'action' => 'read',
-                'session' => $session->getName()
-            ]
+                'action'  => 'read',
+                'session' => $session->getName(),
+            ],
         ];
 
-        try{
-            /* @var SessionInterface $remoteSession */
-            $response = $client->request('GET', $coverageUrl, $options);
+        try {
+            /** @var SessionInterface $remoteSession */
+            $response      = $client->request('GET', $coverageUrl, $options);
             $remoteSession = $response->getBody()->getContents();
             $remoteSession = unserialize($remoteSession);
             $event->getProcessor()->merge($remoteSession->getProcessor());
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->exceptions[] = $exception;
         }
 
         $exceptions = array_merge($this->exceptions, $remoteSession->getExceptions());
 
         $ids = [];
-        foreach($exceptions as $exception){
+        foreach ($exceptions as $exception) {
             $message = $exception->getMessage();
-            $id = md5($message);
-            if(!in_array($id,$ids)){
+            $id      = md5($message);
+            if (!\in_array($id, $ids, true)) {
                 $ids[] = $id;
                 $consoleIO->coverageInfo($message);
             }
