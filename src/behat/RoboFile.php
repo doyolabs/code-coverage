@@ -61,13 +61,6 @@ class RoboFile extends Tasks
     {
         $this->taskExec('clear')->run();
 
-        if ($this->coverage) {
-            $this->taskFilesystemStack()
-                ->mkdir(__DIR__.'/build', 0775)
-                ->mkdir(__DIR__.'/build/cov', 0775)
-                ->run();
-        }
-
         /** @var \Robo\Result[] $results */
         $results   = [];
         $results[] = $this->configurePhpSpec()->run();
