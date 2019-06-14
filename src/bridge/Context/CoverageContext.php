@@ -32,7 +32,7 @@ class CoverageContext implements Context
     public function iReadPhpCoverageReport($file)
     {
         $file = getcwd().\DIRECTORY_SEPARATOR.$file;
-
+        Assert::fileExists($file);
         /** @var CodeCoverage $coverage */
         include $file;
 

@@ -5,7 +5,7 @@ default:
                 - Doyo\PhpSpec\CodeCoverage\Context\ServiceContext
                 - Doyo\PhpSpec\CodeCoverage\Context\PhpSpecRunContext
     extensions:
-        Doyo\Behat\Coverage\Extension:
+        Doyo\Behat\CodeCoverage\Extension:
             filter:
                 - directory: src
                   exclude:

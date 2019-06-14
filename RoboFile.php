@@ -100,7 +100,7 @@ class RoboFile extends Tasks
     public function mergeCoverage()
     {
         $this
-            ->taskExec('/vendor/bin/phpcov')
+            ->taskExec('phpdbg -qrr ./vendor/bin/phpcov')
             ->arg('merge')
             ->option('clover', 'build/logs/clover.xml')
             ->option('html', 'build/html')
@@ -122,7 +122,7 @@ class RoboFile extends Tasks
         if ($this->coverage) {
             $task->option('coverage');
             $command = $task->getCommand();
-            $task    = $this->taskExec($command);
+            $task    = $this->taskExec('phpdbg -qrr '.$command);
         } else {
             $task->option('tags', '~@coverage && ~@remote');
         }
@@ -142,7 +142,7 @@ class RoboFile extends Tasks
 
         if ($this->coverage) {
             $task->option('coverage');
-            $task = $this->taskExec($task->getCommand());
+            $task = $this->taskExec('phpdbg -qrr '.$task->getCommand());
         }
 
         return $task;

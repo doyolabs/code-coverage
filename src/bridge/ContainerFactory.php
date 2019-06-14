@@ -113,6 +113,7 @@ class ContainerFactory
         $file  = sys_get_temp_dir().'/doyo/coverage/container'.$id.'.php';
         $class = 'CodeCoverageContainer'.$id;
         $cachedContainer = new ConfigCache($file, $debug);
+        $debug = true;
         if (!$cachedContainer->isFresh() || $debug) {
             //$this->dumpConfig();
             $builder = new ContainerBuilder();
