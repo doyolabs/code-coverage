@@ -16,4 +16,4 @@ default:
                 - coverage.yaml
             reports:
                 html: build/behat
-                php: build/cov/02-behat.cov
+                php: build/cov/behat.cov

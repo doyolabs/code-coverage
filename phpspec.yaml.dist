@@ -26,5 +26,5 @@ extensions:
         imports:
             - coverage.yaml
         reports:
-            php: build/cov/01-phpspec.cov
+            php: build/cov/phpspec.cov
             html: build/phpspec
