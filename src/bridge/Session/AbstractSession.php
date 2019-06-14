@@ -3,12 +3,13 @@
 namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ContainerFactory;
+use Doyo\Bridge\CodeCoverage\Exception\SessionException;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-abstract class AbstractSession implements SessionInterface
+abstract class AbstractSession implements SessionInterface, \Serializable
 {
     const CACHE_KEY = 'session';
 
@@ -28,7 +29,7 @@ abstract class AbstractSession implements SessionInterface
     protected $adapter;
 
     /**
-     * @var ProcessorInterface|null
+     * @var ProcessorInterface
      */
     protected $processor;
 
@@ -79,7 +80,22 @@ abstract class AbstractSession implements SessionInterface
     public function init(array $config)
     {
         $this->config = $config;
+        $this->createContainer($config);
+        $this->processor = $this->container->get('factory')->createProcessor(true);
         $this->save();
+    }
+
+    public function serialize()
+    {
+        $data = $this->toCache();
+
+        return \serialize($data);
+    }
+
+    public function unserialize($serialized)
+    {
+        $cache = \unserialize($serialized);
+        $this->fromCache($cache);
     }
 
     /**
@@ -95,7 +111,7 @@ abstract class AbstractSession implements SessionInterface
      */
     public function getProcessor()
     {
-        // TODO: Implement getProcessor() method.
+        return $this->processor;
     }
 
     public function refresh()
@@ -103,31 +119,43 @@ abstract class AbstractSession implements SessionInterface
         $adapter = $this->adapter;
 
         $cached = $adapter->getItem(static::CACHE_KEY)->get();
+        $this->fromCache($cached);
 
-        foreach($this->cachedProperties as $name){
-            $this->{$name} = $cached[$name];
+        $this->createContainer($this->config);
+    }
+
+    private function createContainer($config)
+    {
+        $container = (new ContainerFactory($config))->getContainer();
+        $this->container = $container;
+    }
+
+    private function toCache()
+    {
+        $data = [];
+
+        foreach($this->cachedProperties as $property){
+            $data[$property] = $this->{$property};
         }
 
-        if(empty($this->config)){
+        return $data;
+    }
+
+    private function fromCache($cache)
+    {
+        if(is_null($cache)){
             return;
         }
-
-        $container = (new ContainerFactory($this->config))->getContainer();
-        if(is_null($this->processor)){
-            $this->processor = $container->get('factory')->createProcessor();
+        foreach ($cache as $name => $value){
+            $this->{$name} = $value;
         }
-        $this->container = $container;
     }
 
     public function save()
     {
         $adapter = $this->adapter;
         $item = $adapter->getItem(static::CACHE_KEY);
-
-        $data = [];
-        foreach($this->cachedProperties as $property){
-            $data[$property] = $this->{$property};
-        }
+        $data = $this->toCache();
 
         $item->set($data);
         $adapter->save($item);
@@ -143,12 +171,12 @@ abstract class AbstractSession implements SessionInterface
 
     public function hasExceptions()
     {
-        // TODO: Implement hasExceptions() method.
+        return count($this->exceptions) > 0;
     }
 
     public function getExceptions()
     {
-        // TODO: Implement getExceptions() method.
+        return $this->exceptions;
     }
 
     public function addException(\Exception $exception)
@@ -163,11 +191,18 @@ abstract class AbstractSession implements SessionInterface
 
     public function setTestCase(TestCase $testCase)
     {
-        // TODO: Implement setTestCase() method.
+        $this->testCase = $testCase;
     }
 
+    /**
+     * @throws SessionException If TestCase is null
+     */
     public function start()
     {
+        if(is_null($this->testCase)){
+            throw new SessionException('Can not start coverage without null TestCase');
+        }
+
         try{
             $container = $this->container;
             $testCase = $this->testCase;

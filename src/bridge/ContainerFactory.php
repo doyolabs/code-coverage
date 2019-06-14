@@ -76,55 +76,21 @@ class ContainerFactory
      */
     public function createProcessor(bool $useDummyDriver = false): ProcessorInterface
     {
-        $container = $this->container;
-        $driverClass = Dummy::class;
-        if(!$useDummyDriver){
-            $driverClass = $container->getParameter('coverage.driver.class');
-        }
-
-        $filter = $container->get('coverage.filter');
-        $driver = new $driverClass;
-        $processor = new Processor($driver, $filter);
+        $coverage = $this->createCodeCoverage($useDummyDriver);
+        $processor = new Processor($coverage);
 
         return $processor;
     }
 
-    /**
-     * @param   string $type
-     * @param   string $name
-     * @return  SessionInterface
-     * @throws SessionException
-     */
-    public function createSession($type, $name): SessionInterface
-    {
-        $container = $this->container;
-
-        $map = [
-            'local' => LocalSession::class,
-            'remote' => RemoteSession::class
-        ];
-
-        if(!isset($map[$type])){
-            throw new SessionException('Unknown session type: '.$type, ' for: '.$name);
-        }
-
-        $codeCoverage = $this->createCodeCoverage();
-        $patchXdebug = $container->getParameter('coverage.patch_xdebug');
-        $filter = $container->get('coverage.filter');
-        $processor = new Processor(new Dummy(), $filter);
-        $class = $map[$type];
-
-        /* @var SessionInterface $session */
-        $session = new $class($name, $codeCoverage, $patchXdebug);
-        $session->setProcessor($processor);
-
-        return $session;
-    }
-
-    public function createCodeCoverage()
+    public function createCodeCoverage(bool $useDummyDriver = false)
     {
         $container = $this->container;
         $driverClass = $container->getParameter('coverage.driver.class');
+
+        if($useDummyDriver){
+            $driverClass = $container->getParameter('coverage.driver.dummy.class');
+        }
+
         $driver = new $driverClass;
         $filter = $container->get('coverage.filter');
         $coverage = new \SebastianBergmann\CodeCoverage\CodeCoverage($driver, $filter);

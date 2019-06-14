@@ -49,17 +49,9 @@ class Processor implements ProcessorInterface
      */
     private $currentTestCase;
 
-    private $codeCoverageOptions = [];
-
-    public function __construct(
-        $driver = null,
-        $filter = null,
-        $codeCoverageOptions = []
-    )
+    public function __construct(CodeCoverage $codeCoverage)
     {
-        $this->driver = $driver;
-        $this->filter = $filter;
-        $this->codeCoverageOptions = $codeCoverageOptions;
+        $this->codeCoverage = $codeCoverage;
     }
 
     public function setCurrentTestCase(TestCase $testCase)
@@ -76,12 +68,12 @@ class Processor implements ProcessorInterface
     {
         $this->setCurrentTestCase($testCase);
         $this->addTestCase($testCase);
-        $this->getCodeCoverage()->start($testCase->getName(), $clear);
+        $this->codeCoverage->start($testCase->getName(), $clear);
     }
 
     public function stop(bool $append = true, $linesToBeCovered = [], array $linesToBeUsed = [], bool $ignoreForceCoversAnnotation = false): array
     {
-        return $this->getCodeCoverage()->stop($append, $linesToBeCovered, $linesToBeUsed, $ignoreForceCoversAnnotation);
+        return $this->codeCoverage->stop($append, $linesToBeCovered, $linesToBeUsed, $ignoreForceCoversAnnotation);
     }
 
     public function merge($processor)
@@ -95,12 +87,7 @@ class Processor implements ProcessorInterface
 
     public function clear()
     {
-        $this->getCodeCoverage()->clear();
-    }
-
-    public function setCodeCoverage(CodeCoverage $codeCoverage)
-    {
-        $this->codeCoverage = $codeCoverage;
+        $this->codeCoverage->clear();
     }
 
     /**
@@ -108,11 +95,6 @@ class Processor implements ProcessorInterface
      */
     public function getCodeCoverage()
     {
-        if (null === $this->codeCoverage) {
-            $this->codeCoverage = new CodeCoverage($this->driver, $this->filter);
-            $this->codeCoverage->setDisableIgnoredLines(true);
-        }
-
         return $this->codeCoverage;
     }
 
@@ -123,7 +105,7 @@ class Processor implements ProcessorInterface
 
     public function complete()
     {
-        $coverage  = $this->getCodeCoverage();
+        $coverage  = $this->codeCoverage;
         $testCases = $this->testCases;
         $tests     = $coverage->getTests();
 

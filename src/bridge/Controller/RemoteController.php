@@ -85,7 +85,9 @@ class RemoteController
         $error = 'Failed to create session: <comment>'.$name.'</comment>';
 
         try{
-            $created = RemoteSession::init($name, $config);
+            $session = new RemoteSession($name);
+            $session->init($config);
+            $created = true;
         }catch (\Exception $e){
             $error = $e->getMessage();
             $created = false;
@@ -118,9 +120,9 @@ class RemoteController
 
             return new JsonResponse($data, Response::HTTP_NOT_FOUND);
         }
+
         $session = $request->get('session');
         $session = new RemoteSession($session);
-        $data    = serialize($session);
 
         if (null === $session->getProcessor()) {
             $data = [
@@ -129,6 +131,8 @@ class RemoteController
 
             return new JsonResponse($data, Response::HTTP_NOT_FOUND);
         }
+
+        $data    = serialize($session);
 
         $response =  new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', static::SERIALIZED_OBJECT_CONTENT_TYPE);

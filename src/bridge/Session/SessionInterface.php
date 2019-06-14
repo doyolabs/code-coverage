@@ -15,6 +15,7 @@ namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
+use phpDocumentor\Reflection\Types\Null_;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
