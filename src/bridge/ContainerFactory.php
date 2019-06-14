@@ -26,19 +26,10 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\Yaml\Yaml;
 
 class ContainerFactory
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $class;
-
     /**
      * @var array
      */
@@ -51,11 +42,6 @@ class ContainerFactory
 
     public function __construct(array $config = [])
     {
-        $id    = md5(serialize($config));
-        $class = 'CodeCoverageContainer'.$id;
-
-        $this->id     = $id;
-        $this->class  = $class;
         $this->config = $config;
     }
 
@@ -106,24 +92,40 @@ class ContainerFactory
 
     private function doCreateContainer()
     {
-        $id    = $this->id;
-        $class = $this->class;
-        $file  = sys_get_temp_dir().'/doyo/coverage/'.$id.'.php';
-        //$config = ['config' => $this->config];
         $config = $this->config;
-        $debug = isset($config['debug']) ? $config['debug']:false;
+        $configs = [];
 
+        if(isset($config['imports'])){
+            $configs = $this->normalizeConfig($config);
+            unset($config['imports']);
+        }
+
+        $configs[] = $config;
+
+        $debug = false;
+        foreach($configs as $config){
+            if(isset($config['debug'])){
+                $debug = $config['debug'];
+            }
+        }
+
+        $id    = md5(serialize($configs));
+        $file  = sys_get_temp_dir().'/doyo/coverage/container'.$id.'.php';
+        $class = 'CodeCoverageContainer'.$id;
         $cachedContainer = new ConfigCache($file, $debug);
         if (!$cachedContainer->isFresh() || $debug) {
             //$this->dumpConfig();
             $builder = new ContainerBuilder();
 
             $builder->registerExtension(new CodeCoverageExtension());
-            $builder->loadFromExtension('coverage', $config);
+            foreach($configs as $config){
+                $builder->loadFromExtension('coverage', $config);
+            }
 
             $builder->addCompilerPass(new CoveragePass());
             $builder->addCompilerPass(new ReportPass());
             $builder->compile(true);
+
 
             $dumper = new PhpDumper($builder);
             $cachedContainer->write(
@@ -141,5 +143,21 @@ class ContainerFactory
         $container->set('factory', $this);
 
         $this->container = $container;
+    }
+
+    private function normalizeConfig($configuration)
+    {
+        $configs = [];
+        foreach($configuration['imports'] as $file){
+            $configs[] = $this->importFile($file);
+        }
+
+        return $configs;
+    }
+
+    private function importFile($file)
+    {
+        $config = Yaml::parseFile($file);
+        return $config;
     }
 }

@@ -71,7 +71,15 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-[behat.yml{,.dist}]
+[behat.yml{.dist}]
+indent_style = space
+indent_size = 2
+
+[coverage.yml{,.dist}]
+indent_style = space
+indent_size = 2
+
+[coverage.yaml{,.dist}]
 indent_style = space
 indent_size = 2
 

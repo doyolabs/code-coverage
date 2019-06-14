@@ -80,7 +80,17 @@ class CoveragePass implements CompilerPassInterface
         }
 
         if ('file' === $type) {
-            $definition->addMethodCall($method.'File'.$methodSuffix, [$file]);
+
+            $files = [$file];
+
+            if(false !== ($pos=strpos($file, '*'))){
+                $files = [];
+                foreach(glob($file) as $filename){
+                    $files[] = $filename;
+                }
+            }
+
+            $definition->addMethodCall($method.'File'.$methodSuffix, $files);
         }
     }
 }

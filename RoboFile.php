@@ -100,7 +100,7 @@ class RoboFile extends Tasks
     public function mergeCoverage()
     {
         $this
-            ->taskExec('phpdbg -qrr ./vendor/bin/phpcov')
+            ->taskExec('/vendor/bin/phpcov')
             ->arg('merge')
             ->option('clover', 'build/logs/clover.xml')
             ->option('html', 'build/html')
