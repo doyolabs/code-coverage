@@ -59,6 +59,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('xdebug_patch')->defaultTrue()->end()
+                ->booleanNode('debug')->defaultFalse()->end()
                 ->arrayNode('coverage')
                     ->addDefaultsIfNotSet()
                     ->children()

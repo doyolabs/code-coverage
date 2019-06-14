@@ -9,6 +9,8 @@
         <parameter key="coverage.driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
         <parameter key="coverage.class">Doyo\Bridge\CodeCoverage\CodeCoverage</parameter>
         <parameter key="console.io.class">Doyo\Bridge\CodeCoverage\Console\Console</parameter>
+        <parameter key="factory.class">Doyo\Bridge\CodeCoverage\ContainerFactory</parameter>
+        <parameter key="coverage.patch_xdebug">true</parameter>
     </parameters>
     <services>
         <defaults autoconfigure="true" public="true"/>
@@ -20,10 +22,10 @@
 
         <service id="console.input" synthetic="true"/>
         <service id="console.output" synthetic="true"/>
+        <service id="factory" class="Doyo\Bridge\CodeCoverage\ContainerFactory" synthetic="true"/>
 
         <service id="code_coverage" class="%php.coverage.class%">
-            <argument type="service" id="coverage.driver"/>
-            <argument type="service" id="coverage.filter"/>
+            <factory service="factory" method="createCodeCoverage"/>
         </service>
 
         <service id="console.io" class="%console.io.class%">

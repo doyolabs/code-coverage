@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Spec\Doyo\Bridge\CodeCoverage\Session;
 
-use Doyo\Bridge\CodeCoverage\Processor;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
 use Doyo\Bridge\CodeCoverage\TestCase;
@@ -25,12 +26,12 @@ use SebastianBergmann\Environment\Runtime;
 class RemoteSessionSpec extends ObjectBehavior
 {
     public function let(
-        ProcessorInterface $processor
+        ProcessorInterface $processor,
+        Dummy $driver
     ) {
         $filter = new Filter();
-        $this->beConstructedWith('spec-remote');
-        $processor->getCodeCoverageOptions()->willReturn([]);
-        $processor->getCodeCoverageFilter()->willReturn($filter);
+        $coverage = new CodeCoverage($driver->getWrappedObject(), $filter);
+        $this->beConstructedWith('spec-remote', $coverage, false);
         $processor->clear()->willReturn(null);
         $this->setProcessor($processor);
     }
@@ -42,18 +43,15 @@ class RemoteSessionSpec extends ObjectBehavior
 
     public function it_should_init_coverage_session()
     {
-        $this->init([]);
-        $processor = $this->getProcessor();
-        $processor->shouldHaveType(Processor::class);
-        $processor->getCodeCoverageOptions()->shouldHaveKeyWithValue('addUncoveredFilesFromWhitelist', false);
-        $processor->getCodeCoverageFilter()->shouldHaveType(Filter::class);
-        $processor->getCodeCoverageFilter()->getWhitelistedFiles()->shouldHaveKeyWithValue(__FILE__, true);
+        $this::init('spec-remote',[]);
+        $this->getProcessor()->shouldImplement(ProcessorInterface::class);
     }
 
     public function it_should_start_new_session(
         ProcessorInterface $processor
     ) {
         $runtime = new Runtime();
+        
         if (!$runtime->canCollectCodeCoverage()) {
             throw new SkippingException('not in phpdbg or xdebug');
         }
@@ -61,8 +59,6 @@ class RemoteSessionSpec extends ObjectBehavior
         $_SERVER[RemoteSession::HEADER_SESSION_KEY]   = 'spec-remote';
         $_SERVER[RemoteSession::HEADER_TEST_CASE_KEY] = 'spec-test-case';
 
-        $filter = new Filter();
-        $processor->getCodeCoverageFilter()->willReturn($filter);
         $this->setProcessor($processor);
         $this->save();
 
@@ -102,15 +98,11 @@ class RemoteSessionSpec extends ObjectBehavior
         $this->getTestCase()->shouldBeAnInstanceOf(TestCase::class);
     }
 
-    public function its_doStartSession_should_start_coverage_error(
-        ProcessorInterface $processor
-    ) {
+    public function its_doStartSession_should_start_coverage_error() {
         $this->reset();
         $_SERVER[RemoteSession::HEADER_SESSION_KEY]   = 'spec-remote';
         $_SERVER[RemoteSession::HEADER_TEST_CASE_KEY] = 'test-case';
 
-        $e = new \Exception('some error');
-        $processor->getCodeCoverageFilter()->willThrow($e);
         $this->hasExceptions()->shouldBe(false);
         $this->doStartSession();
         $this->hasExceptions()->shouldBe(true);

@@ -33,25 +33,6 @@ interface ProcessorInterface
     public function getCurrentTestCase();
 
     /**
-     * @return Filter
-     */
-    public function getCodeCoverageFilter();
-
-    /**
-     * Set code coverage options.
-     *
-     * @param array $options
-     */
-    public function setCodeCoverageOptions(array $options);
-
-    /**
-     * Get code coverage options.
-     *
-     * @return array
-     */
-    public function getCodeCoverageOptions();
-
-    /**
      * @return CodeCoverage
      */
     public function getCodeCoverage();

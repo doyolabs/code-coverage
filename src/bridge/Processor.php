@@ -45,19 +45,21 @@ class Processor implements ProcessorInterface
     private $filter;
 
     /**
-     * @var array
-     */
-    private $coverageOptions;
-
-    /**
      * @var TestCase
      */
     private $currentTestCase;
 
-    public function __construct($driver = null, $filter = null)
+    private $codeCoverageOptions = [];
+
+    public function __construct(
+        $driver = null,
+        $filter = null,
+        $codeCoverageOptions = []
+    )
     {
         $this->driver = $driver;
         $this->filter = $filter;
+        $this->codeCoverageOptions = $codeCoverageOptions;
     }
 
     public function setCurrentTestCase(TestCase $testCase)
@@ -68,21 +70,6 @@ class Processor implements ProcessorInterface
     public function getCurrentTestCase()
     {
         return $this->currentTestCase;
-    }
-
-    public function setCodeCoverageOptions(array $options)
-    {
-        $this->coverageOptions = $options;
-    }
-
-    public function getCodeCoverageOptions()
-    {
-        return $this->coverageOptions;
-    }
-
-    public function getCodeCoverageFilter()
-    {
-        return $this->filter;
     }
 
     public function start(TestCase $testCase, $clear = false)

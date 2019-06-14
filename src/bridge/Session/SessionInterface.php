@@ -24,33 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 interface SessionInterface
 {
     /**
-     * Enable or disable xdebug patch.
-     *
-     * @param bool $flag
-     */
-    public function setPatchXdebug(bool $flag);
-    
-    /**
-     * Set code coverage to use
-     *
-     * @param CodeCoverage $coverage
-     * @return void
-     */
-    public function setCodeCoverage(CodeCoverage $coverage);
-
-    /**
      * Returns current session name.
      *
      * @return string
      */
     public function getName();
-
-    /**
-     * Set processor for this session.
-     *
-     * @param ProcessorInterface $processor
-     */
-    public function setProcessor(ProcessorInterface $processor);
 
     /**
      * Get processor for this session.
@@ -104,6 +82,4 @@ interface SessionInterface
      * @return array
      */
     public function stop();
-
-    public function setContainer(ContainerInterface $container);
 }

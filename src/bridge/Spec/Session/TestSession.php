@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Spec\Doyo\Bridge\CodeCoverage\Session;
 
-use Doyo\Bridge\CodeCoverage\Session\Session;
+use Doyo\Bridge\CodeCoverage\Session\AbstractSession;
 
-class TestSession extends Session
+class TestSession extends AbstractSession
 {
+    public function getConfig()
+    {
+        return $this->config;
+    }
 }
