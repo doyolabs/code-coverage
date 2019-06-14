@@ -122,7 +122,7 @@ class RoboFile extends Tasks
         if ($this->coverage) {
             $task->option('coverage');
             $command = $task->getCommand();
-            $task    = $this->taskExec('phpdbg -qrr '.$command);
+            $task    = $this->taskExec($command);
         } else {
             $task->option('tags', '~@coverage && ~@remote');
         }
@@ -142,7 +142,7 @@ class RoboFile extends Tasks
 
         if ($this->coverage) {
             $task->option('coverage');
-            $task = $this->taskExec('phpdbg -qrr '.$task->getCommand());
+            $task = $this->taskExec($task->getCommand());
         }
 
         return $task;

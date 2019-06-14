@@ -2,8 +2,8 @@ default:
     suites:
         default:
             paths:
-                - '%paths.base%/src/code-coverage/Resources/features'
-                - '%paths.base%/src/phpspec-extension/Resources/features'
+                - '%paths.base%/src/bridge/Resources/features'
+                - '%paths.base%/src/phpspec/Resources/features'
             contexts:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
                 - Doyo\Bridge\CodeCoverage\Context\CoverageContext
@@ -15,6 +15,7 @@ default:
             filter:
                 - directory: src
                   exclude:
+                      - src/*/Driver
                       - src/*/Resources
                       - src/*/Context
                       - src/*/Spec

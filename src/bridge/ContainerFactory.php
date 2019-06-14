@@ -15,6 +15,7 @@ namespace Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Compiler\CoveragePass;
 use Doyo\Bridge\CodeCoverage\Compiler\ReportPass;
+use Doyo\Bridge\CodeCoverage\Console\Application;
 use Doyo\Bridge\CodeCoverage\DependencyInjection\CodeCoverageExtension;
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\Exception\SessionException;
@@ -96,6 +97,11 @@ class ContainerFactory
         $coverage = new \SebastianBergmann\CodeCoverage\CodeCoverage($driver, $filter);
 
         return $coverage;
+    }
+
+    public function createApplication($version = 'dev')
+    {
+        return new Application('code-coverage', $version);
     }
 
     private function doCreateContainer()

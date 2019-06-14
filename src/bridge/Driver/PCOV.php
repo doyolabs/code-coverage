@@ -17,13 +17,13 @@ use SebastianBergmann\CodeCoverage\Version;
 
 if (version_compare(Version::id(), '6.0', '<')) {
     // @codeCoverageIgnoreStart
-    class BaseDummy extends \Doyo\Bridge\CodeCoverage\Driver\Compat\BaseDummy5
+    class BasePCOV extends \Doyo\Bridge\CodeCoverage\Driver\Compat\BasePCOV5
     {
     }
     // @codeCoverageIgnoreEnd
 } else {
     // @codeCoverageIgnoreStart
-    class BaseDummy extends \Doyo\Bridge\CodeCoverage\Driver\Compat\BaseDummy6
+    class BasePCOV extends \Doyo\Bridge\CodeCoverage\Driver\Compat\BasePCOV6
     {
     }
     // @codeCoverageIgnoreEnd
@@ -32,6 +32,6 @@ if (version_compare(Version::id(), '6.0', '<')) {
 /**
  * A dumb driver to be used during testing.
  */
-class Dummy extends BaseDummy
+class PCOV extends BasePCOV
 {
 }

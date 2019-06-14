@@ -26,6 +26,7 @@ extensions:
         filter:
             - directory: src
               exclude:
+                - src/*/Driver
                 - src/*/Resources
                 - src/*/Context
                 - src/*/Spec
