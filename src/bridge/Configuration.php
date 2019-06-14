@@ -58,7 +58,11 @@ class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
+                ->arrayNode('imports')
+                    ->scalarPrototype()->end()
+                ->end()
                 ->booleanNode('xdebug_patch')->defaultTrue()->end()
+                ->booleanNode('debug')->defaultFalse()->end()
                 ->arrayNode('coverage')
                     ->addDefaultsIfNotSet()
                     ->children()

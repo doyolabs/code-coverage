@@ -2,8 +2,8 @@ default:
     suites:
         default:
             paths:
-                - '%paths.base%/src/code-coverage/Resources/features'
-                - '%paths.base%/src/phpspec-extension/Resources/features'
+                - '%paths.base%/src/bridge/Resources/features'
+                - '%paths.base%/src/phpspec/Resources/features'
             contexts:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
                 - Doyo\Bridge\CodeCoverage\Context\CoverageContext
@@ -12,17 +12,8 @@ default:
 
     extensions:
         Doyo\Behat\CodeCoverage\Extension:
-            filter:
-                - directory: src
-                  exclude:
-                      - src/*/Resources
-                      - src/*/Context
-                      - src/*/Spec
-                      - src/*/vendor
-                      - src/*/build
-                      - file: src/bridge/RoboFile.php
-                      - file: src/phpspec/RoboFile.php
-                      - file: src/behat/RoboFile.php
+            imports:
+                - coverage.yaml
             reports:
                 html: build/behat
-                php: build/cov/02-behat.cov
+                php: build/cov/behat.cov

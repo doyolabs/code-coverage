@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Session;
 
+use Doyo\Bridge\CodeCoverage\ContainerFactory;
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
+use Doyo\Bridge\CodeCoverage\Exception\SessionException;
 use Doyo\Bridge\CodeCoverage\Processor;
 use Doyo\Bridge\CodeCoverage\TestCase;
 use SebastianBergmann\CodeCoverage\Filter;
 
-class RemoteSession extends Session
+class RemoteSession extends AbstractSession
 {
     const HEADER_SESSION_KEY   = 'HTTP_DOYO_COVERAGE_SESSION';
     const HEADER_TEST_CASE_KEY = 'HTTP_DOYO_COVERAGE_TESTCASE';
@@ -31,6 +33,7 @@ class RemoteSession extends Session
 
         $name    = $_SERVER[static::HEADER_SESSION_KEY];
         $session = new static($name);
+
         if (isset($_SERVER[static::HEADER_TEST_CASE_KEY])) {
             $session->doStartSession();
         } else {
@@ -39,26 +42,6 @@ class RemoteSession extends Session
         $session->save();
 
         return true;
-    }
-
-    public function init(array $config)
-    {
-        $filter = new Filter();
-        if (isset($config['filterOptions'])) {
-            $filter->setWhitelistedFiles($config['filterOptions']['whitelistedFiles']);
-        }
-
-        $processor    = new Processor(new Dummy(), $filter);
-        $codeCoverage = $processor->getCodeCoverage();
-        if (isset($config['codeCoverageOptions'])) {
-            foreach ($config['codeCoverageOptions'] as $method => $option) {
-                $method = 'set'.ucfirst($method);
-                \call_user_func_array([$codeCoverage, $method], [$option]);
-            }
-            $processor->setCodeCoverageOptions($config['codeCoverageOptions']);
-        }
-        $this->setProcessor($processor);
-        $this->reset();
     }
 
     public function doStartSession()

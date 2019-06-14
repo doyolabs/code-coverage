@@ -15,6 +15,9 @@ namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
+use phpDocumentor\Reflection\Types\Null_;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Code coverage session.
@@ -22,25 +25,11 @@ use Doyo\Bridge\CodeCoverage\TestCase;
 interface SessionInterface
 {
     /**
-     * Enable or disable xdebug patch.
-     *
-     * @param bool $flag
-     */
-    public function setPatchXdebug(bool $flag);
-
-    /**
      * Returns current session name.
      *
      * @return string
      */
     public function getName();
-
-    /**
-     * Set processor for this session.
-     *
-     * @param ProcessorInterface $processor
-     */
-    public function setProcessor(ProcessorInterface $processor);
 
     /**
      * Get processor for this session.

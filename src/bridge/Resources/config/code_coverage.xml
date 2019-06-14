@@ -2,14 +2,16 @@
 
 <container xmlns="http://symfony.com/schema/dic/services">
     <parameters>
-        <parameter key="driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
         <parameter key="processor.class">Doyo\Bridge\CodeCoverage\Processor</parameter>
         <parameter key="runtime.class">Doyo\Bridge\CodeCoverage\Environment\Runtime</parameter>
         <parameter key="php.coverage.class">SebastianBergmann\CodeCoverage\CodeCoverage</parameter>
         <parameter key="php.coverage.filter.class">SebastianBergmann\CodeCoverage\Filter</parameter>
+        <parameter key="coverage.driver.dummy.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
         <parameter key="coverage.driver.class">Doyo\Bridge\CodeCoverage\Driver\Dummy</parameter>
         <parameter key="coverage.class">Doyo\Bridge\CodeCoverage\CodeCoverage</parameter>
         <parameter key="console.io.class">Doyo\Bridge\CodeCoverage\Console\Console</parameter>
+        <parameter key="factory.class">Doyo\Bridge\CodeCoverage\ContainerFactory</parameter>
+        <parameter key="coverage.patch_xdebug">true</parameter>
     </parameters>
     <services>
         <defaults autoconfigure="true" public="true"/>
@@ -21,10 +23,10 @@
 
         <service id="console.input" synthetic="true"/>
         <service id="console.output" synthetic="true"/>
+        <service id="factory" class="Doyo\Bridge\CodeCoverage\ContainerFactory" synthetic="true"/>
 
         <service id="code_coverage" class="%php.coverage.class%">
-            <argument type="service" id="coverage.driver"/>
-            <argument type="service" id="coverage.filter"/>
+            <factory service="factory" method="createCodeCoverage"/>
         </service>
 
         <service id="console.io" class="%console.io.class%">
@@ -33,11 +35,7 @@
         </service>
 
         <service id="processor" class="%processor.class%">
-            <argument id="coverage.driver"/>
-            <argument id="coverage.filter"/>
-            <call method="setCodeCoverage">
-                <argument type="service" id="code_coverage"/>
-            </call>
+            <factory service="factory" method="createProcessor"/>
         </service>
 
         <service id="coverage" class="%coverage.class%">

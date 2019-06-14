@@ -45,19 +45,13 @@ class Processor implements ProcessorInterface
     private $filter;
 
     /**
-     * @var array
-     */
-    private $coverageOptions;
-
-    /**
      * @var TestCase
      */
     private $currentTestCase;
 
-    public function __construct($driver = null, $filter = null)
+    public function __construct(CodeCoverage $codeCoverage)
     {
-        $this->driver = $driver;
-        $this->filter = $filter;
+        $this->codeCoverage = $codeCoverage;
     }
 
     public function setCurrentTestCase(TestCase $testCase)
@@ -70,31 +64,16 @@ class Processor implements ProcessorInterface
         return $this->currentTestCase;
     }
 
-    public function setCodeCoverageOptions(array $options)
-    {
-        $this->coverageOptions = $options;
-    }
-
-    public function getCodeCoverageOptions()
-    {
-        return $this->coverageOptions;
-    }
-
-    public function getCodeCoverageFilter()
-    {
-        return $this->filter;
-    }
-
     public function start(TestCase $testCase, $clear = false)
     {
         $this->setCurrentTestCase($testCase);
         $this->addTestCase($testCase);
-        $this->getCodeCoverage()->start($testCase->getName(), $clear);
+        $this->codeCoverage->start($testCase->getName(), $clear);
     }
 
     public function stop(bool $append = true, $linesToBeCovered = [], array $linesToBeUsed = [], bool $ignoreForceCoversAnnotation = false): array
     {
-        return $this->getCodeCoverage()->stop($append, $linesToBeCovered, $linesToBeUsed, $ignoreForceCoversAnnotation);
+        return $this->codeCoverage->stop($append, $linesToBeCovered, $linesToBeUsed, $ignoreForceCoversAnnotation);
     }
 
     public function merge($processor)
@@ -108,12 +87,7 @@ class Processor implements ProcessorInterface
 
     public function clear()
     {
-        $this->getCodeCoverage()->clear();
-    }
-
-    public function setCodeCoverage(CodeCoverage $codeCoverage)
-    {
-        $this->codeCoverage = $codeCoverage;
+        $this->codeCoverage->clear();
     }
 
     /**
@@ -121,11 +95,6 @@ class Processor implements ProcessorInterface
      */
     public function getCodeCoverage()
     {
-        if (null === $this->codeCoverage) {
-            $this->codeCoverage = new CodeCoverage($this->driver, $this->filter);
-            $this->codeCoverage->setDisableIgnoredLines(true);
-        }
-
         return $this->codeCoverage;
     }
 
@@ -136,7 +105,7 @@ class Processor implements ProcessorInterface
 
     public function complete()
     {
-        $coverage  = $this->getCodeCoverage();
+        $coverage  = $this->codeCoverage;
         $testCases = $this->testCases;
         $tests     = $coverage->getTests();
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Doyo\Bridge\CodeCoverage\Session;
 
-class LocalSession extends Session
+class LocalSession extends AbstractSession
 {
     public static function startSession($name): bool
     {

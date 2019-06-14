@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Doyo\Bridge\CodeCoverage\Environment;
 
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
+use Doyo\Bridge\CodeCoverage\Driver\PCOV;
 use SebastianBergmann\CodeCoverage\Driver\HHVM;
 use SebastianBergmann\CodeCoverage\Driver\PHPDBG;
 use SebastianBergmann\CodeCoverage\Driver\Xdebug;
@@ -26,6 +27,7 @@ use SebastianBergmann\Environment\Runtime as RuntimeEnvironment;
  * @method bool isPHPDBG()
  * @method bool hasXdebug()
  * @method bool hasPHPDBGCodeCoverage()
+ * @method bool isPHP()
  */
 final class Runtime implements RuntimeInterface
 {
@@ -49,6 +51,13 @@ final class Runtime implements RuntimeInterface
             $driverClass = PHPDBG::class;
         }
 
+        if (
+            version_compare(PHP_VERSION, '7.0', '>')
+            && $this->hasPCOV()
+        ){
+            //$driverClass = PCOV::class;
+        }
+
         if ($this->hasXdebug()) {
             $driverClass =  Xdebug::class;
         }
@@ -57,13 +66,18 @@ final class Runtime implements RuntimeInterface
         return $driverClass;
     }
 
+    public function hasPCOV()
+    {
+        return $this->isPHP() && \extension_loaded('pcov') && \ini_get('pcov.enabled');
+    }
+
     /**
      * Returns true when Xdebug is supported or
      * the runtime used is PHPDBG.
      */
     public function canCollectCodeCoverage(): bool
     {
-        return $this->runtime->canCollectCodeCoverage();
+        return $this->hasXdebug() || $this->hasPCOV() || $this->hasPHPDBGCodeCoverage();
     }
 
     public function __call($name, $arguments)

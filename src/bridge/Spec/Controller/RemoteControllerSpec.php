@@ -16,6 +16,7 @@ namespace Spec\Doyo\Bridge\CodeCoverage\Controller;
 use Doyo\Bridge\CodeCoverage\Controller\RemoteController;
 use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
+use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
 use Doyo\Bridge\CodeCoverage\Session\SessionInterface;
 use PhpSpec\ObjectBehavior;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -81,18 +82,7 @@ class RemoteControllerSpec extends ObjectBehavior
     public function its_initAction_should_init_new_coverage_session(
         Request $request
     ) {
-        $config = [
-            'filterOptions' => [
-                'whitelistedFiles' => [
-                    __FILE__,
-                ],
-            ],
-            'codeCoverageOptions' => [
-                'addUncoveredFilesFromWhitelist' => true,
-            ],
-        ];
-
-        $data = json_encode($config);
+        $data = json_encode([]);
 
         $request->get('session')->shouldBeCalled()->willReturn('spec-remote');
         $request->getContent()->willReturn($data);
@@ -141,19 +131,15 @@ class RemoteControllerSpec extends ObjectBehavior
     }
 
     public function its_readAction_returns_code_coverage_data(
-        Request $request,
-        ProcessorInterface $processor,
-        SessionInterface $session
+        Request $request
     ) {
-        $codeCoverage  = new CodeCoverage(new Dummy());
-        $processor->getCodeCoverage()->willReturn($codeCoverage);
-        $session->getProcessor()->willReturn($processor);
-        $processor->getCodeCoverage()->willReturn($codeCoverage);
+        $session = new RemoteSession('remote-controller');
+        $session->init([]);
 
         $request->isMethod('GET')->willReturn(true);
         $request
             ->get('session')
-            ->willReturn('spec-remote')
+            ->willReturn('remote-controller')
             ->shouldBeCalled();
 
         $response = $this->readAction($request);

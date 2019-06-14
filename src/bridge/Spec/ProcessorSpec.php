@@ -27,8 +27,9 @@ class ProcessorSpec extends ObjectBehavior
         Driver $driver
     ) {
         $filter = new Filter();
+        $coverage  = new CodeCoverage($driver->getWrappedObject(), $filter);
         $filter->addFileToWhitelist(__FILE__);
-        $this->beConstructedWith($driver, $filter);
+        $this->beConstructedWith($coverage);
     }
 
     public function it_is_initializable()
@@ -36,13 +37,9 @@ class ProcessorSpec extends ObjectBehavior
         $this->shouldHaveType(Processor::class);
     }
 
-    public function its_code_coverage_should_be_mutable(
-        Dummy $driver
-    ) {
-        $codeCoverage = new CodeCoverage($driver->getWrappedObject());
+    public function its_code_coverage_should_be_mutable()
+    {
         $this->getCodeCoverage()->shouldHaveType(CodeCoverage::class);
-        $this->setCodeCoverage($codeCoverage);
-        $this->getCodeCoverage()->shouldReturn($codeCoverage);
     }
 
     public function its_currentTestCase_should_be_mutable(

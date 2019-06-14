@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Doyo\Bridge\CodeCoverage\Controller;
 
 use Doyo\Bridge\CodeCoverage\Session\RemoteSession;
+use Spec\Doyo\Bridge\CodeCoverage\ResponseTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Test\Constraint\ResponseHasCookie;
 
 class RemoteController
 {
@@ -80,15 +82,29 @@ class RemoteController
         $name   = $request->get('session');
         $config = $request->getContent();
         $config = json_decode($config, true);
+        $error = 'Failed to create session: <comment>'.$name.'</comment>';
 
-        $session = new RemoteSession($name);
-        $session->init($config);
+        try{
+            $session = new RemoteSession($name);
+            $session->init($config);
+            $created = true;
+        }catch (\Exception $e){
+            $error = $e->getMessage();
+            $created = false;
+        }
 
-        $data = [
-            'message' => 'coverage session: '.$name.' initialized.',
-        ];
+        $status = Response::HTTP_ACCEPTED;
+        if($created){
+            $data = [
+                'message' => 'coverage session: '.$name.' initialized.',
+            ];
+        }else{
+            $data = [
+                'message' => $error
+            ];
+        }
 
-        return new JsonResponse($data, Response::HTTP_ACCEPTED);
+        return new JsonResponse($data, $status);
     }
 
     public function readAction(Request $request)
@@ -104,9 +120,9 @@ class RemoteController
 
             return new JsonResponse($data, Response::HTTP_NOT_FOUND);
         }
+
         $session = $request->get('session');
         $session = new RemoteSession($session);
-        $data    = serialize($session);
 
         if (null === $session->getProcessor()) {
             $data = [
@@ -115,6 +131,8 @@ class RemoteController
 
             return new JsonResponse($data, Response::HTTP_NOT_FOUND);
         }
+
+        $data    = serialize($session);
 
         $response =  new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', static::SERIALIZED_OBJECT_CONTENT_TYPE);

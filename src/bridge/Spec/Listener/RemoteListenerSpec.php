@@ -17,6 +17,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RemoteListenerSpec extends ObjectBehavior
@@ -91,9 +92,8 @@ class RemoteListenerSpec extends ObjectBehavior
     )
     {
         $session = new RemoteSession('spec-remote');
-        $sessionProcessor = new Processor(new Dummy());
-        $session->setProcessor($sessionProcessor);
-
+        $session->init([]);
+        $sessionProcessor = $session->getProcessor();
         $data = serialize($session);
 
         $client->request('POST', Argument::cetera())->willReturn($response);

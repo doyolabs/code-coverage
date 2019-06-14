@@ -30,6 +30,7 @@ class CodeCoverageExtension extends Extension
 
         $container->setParameter('reports', $configuration['reports']);
         $container->setParameter('config.filter', $configuration['filter']);
+        $container->setParameter('coverage.options', $configuration['coverage']);
 
         $loader->load('code_coverage.xml');
         $loader->load('reports.xml');

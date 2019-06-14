@@ -1,0 +1,11 @@
+debug: true
+filter:
+  - directory: src
+    exclude:
+      - src/*/Driver
+      - src/*/Resources
+      - src/*/Context
+      - src/*/Spec
+      - src/*/vendor
+      - src/*/build
+      - file: src/*/RoboFile.php

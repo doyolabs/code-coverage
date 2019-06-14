@@ -88,4 +88,14 @@ class CodeCoverageSpec extends ObjectBehavior
         $subscriber->complete(Argument::cetera())->shouldBeCalledOnce();
         $this->complete()->shouldHaveType(CoverageEvent::class);
     }
+
+    public function its_complete_display_error_when_no_coverage_driver_available(
+        RuntimeInterface $runtime,
+        ConsoleIO $consoleIO
+    )
+    {
+        $runtime->canCollectCodeCoverage()->willReturn(false);
+        $consoleIO->coverageError(Argument::containingString('code coverage driver'))->shouldBeCalledOnce();
+        $this->complete();
+    }
 }
