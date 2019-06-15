@@ -5,8 +5,15 @@ default:
                 - Resources/features
             contexts:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
+                - Doyo\Bridge\CodeCoverage\Context\CoverageContext
+                - Doyo\Bridge\CodeCoverage\Context\ConsoleContext
+                - Doyo\Bridge\CodeCoverage\Context\BehatContext:
+                      cwd: Resources/fixtures
+
     extensions:
         Doyo\Behat\CodeCoverage\Extension:
+            sessions:
+                console: ~
             imports:
                 - Resources/coverage.yaml
             reports:

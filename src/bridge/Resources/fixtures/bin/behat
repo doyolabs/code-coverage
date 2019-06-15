@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+include __DIR__.'/../vendor/autoload.php';
+
+use Behat\Behat\ApplicationFactory;
+
+$factory = new ApplicationFactory();
+$factory->createApplication()->run();

@@ -1,0 +1,19 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - behatch:context:rest
+                - behatch:context:json
+    extensions:
+        Behat\MinkExtension:
+            base_url: http://localhost:8000
+            sessions:
+                default:
+                    goutte: ~
+        Behatch\Extension: ~
+        Doyo\Behat\CodeCoverage\Extension:
+            filter:
+                - src
+            sessions:
+                local: ~
