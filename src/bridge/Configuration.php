@@ -63,6 +63,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->booleanNode('xdebug_patch')->defaultTrue()->end()
                 ->booleanNode('debug')->defaultFalse()->end()
+                ->scalarNode('env')->defaultValue('prod')->end()
                 ->arrayNode('coverage')
                     ->addDefaultsIfNotSet()
                     ->children()

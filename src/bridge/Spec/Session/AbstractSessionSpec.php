@@ -72,10 +72,15 @@ class AbstractSessionSpec extends ObjectBehavior
     }
 
     public function it_should_start_and_stop_coverage(
+        ProcessorInterface $processor,
         TestCase $testCase
     )
     {
+        $processor->merge(Argument::type(ProcessorInterface::class))
+            ->shouldBeCalledOnce();
         $testCase->getName()->willReturn('some-test');
+
+        $this->setProcessor($processor);
         $this->setTestCase($testCase);
         $this->start();
         $this->stop();
@@ -83,4 +88,45 @@ class AbstractSessionSpec extends ObjectBehavior
         $this->hasExceptions()->shouldBe(false);
     }
 
+    public function its_start_should_handle_exception(
+        ProcessorInterface $processor,
+        TestCase $testCase
+    )
+    {
+        $e = new \Exception('some error');
+
+        $testCase->getName()->willThrow($e);
+
+        $this->setTestCase($testCase);
+        $this->setProcessor($processor);
+        $this->start();
+        $this->hasExceptions()->shouldBe(true);
+    }
+
+    public function its_stop_should_handle_exception(
+        ProcessorInterface $processor,
+        TestCase $testCase
+    )
+    {
+        $testCase->getName()->willReturn('test');
+        $e = new \Exception('test');
+        $processor->merge(Argument::any())->willThrow($e);
+        $this->setProcessor($processor);
+        $this->setTestCase($testCase);
+
+        $this->start();
+        $this->stop();
+
+        $this->hasExceptions()->shouldBe(true);
+    }
+
+    public function it_should_shutdown_properly(
+        TestCase $testCase
+    )
+    {
+        $testCase->getName()->willReturn('test');
+        $this->setTestCase($testCase);
+        $this->start();
+        $this->shutdown();
+    }
 }

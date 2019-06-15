@@ -7,12 +7,8 @@ default:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
     extensions:
         Doyo\Behat\CodeCoverage\Extension:
-            filter:
-                - directory: ""
-                  exclude:
-                      - vendor
-                      - build
-                      - Spec
-                      - Resources
-                      - Context
-                      - file: RoboFile.php
+            imports:
+                - Resources/coverage.yaml
+            reports:
+                php: build/cov/behat.cov
+                html: build/cov/html

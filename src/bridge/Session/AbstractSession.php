@@ -234,7 +234,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
                 $this->getName(),
                 $exception->getMessage()
             );
-            throw new SessionException($message);
+            $exception = new  SessionException($message);
+            $this->addException($exception);
         }
     }
 
@@ -245,7 +246,13 @@ abstract class AbstractSession implements SessionInterface, \Serializable
             $this->processor->merge($this->currentProcessor);
             $this->started = false;
         }catch (\Exception $exception){
-            $this->addException($exception);
+            $message = sprintf(
+                "Can not stop coverage on session <comment>%s</comment>. Error message:\n<error>%s</error>",
+                $this->name,
+                $exception->getMessage()
+            );
+            $e = new SessionException($message);
+            $this->addException($e);
         }
     }
 

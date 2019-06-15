@@ -38,6 +38,7 @@ class ContainerFactory
     public function __construct(array $config = [])
     {
         $this->config = $config;
+        $this->doCreateContainer();
     }
 
     /**
@@ -45,10 +46,6 @@ class ContainerFactory
      */
     public function getContainer(): ContainerInterface
     {
-        if (null === $this->container) {
-            $this->doCreateContainer();
-        }
-
         return $this->container;
     }
 
