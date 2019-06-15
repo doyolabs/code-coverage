@@ -44,11 +44,9 @@ class CoveragePass implements CompilerPassInterface
         $definition = $container->getDefinition('coverage.filter');
 
         foreach ($config as $options) {
-            $options['basePath'] = '';
             $this->filterWhitelist($definition, $options, 'add');
             $exclude = $options['exclude'];
             foreach ($exclude as $item) {
-                $item['basePath'] = '';
                 $this->filterWhitelist($definition, $item, 'remove');
             }
         }
@@ -85,11 +83,13 @@ class CoveragePass implements CompilerPassInterface
             if (false !== ($pos=strpos($file, '*'))) {
                 $files = [];
                 foreach (glob($file) as $filename) {
+                    $filename = realpath($filename);
                     $files[] = $filename;
                 }
             }
-
-            $definition->addMethodCall($method.'File'.$methodSuffix, $files);
+            foreach($files as $file){
+                $definition->addMethodCall($method.'File'.$methodSuffix, [$file]);
+            }
         }
     }
 }

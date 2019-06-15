@@ -40,16 +40,21 @@ class ContainerContext implements Context
      */
     public function iConfigureCodeCoverage(PyStringNode $node = null)
     {
-        $config = [];
+        $config = [
+            'env' => 'behat',
+            'debug' => true,
+        ];
         if (null !== $node) {
             $config = Yaml::parse($node->getRaw());
         }
 
-        $container = (new ContainerFactory($config, true))->getContainer();
-        $container->set('console.input', new StringInput(''));
-        $container->set('console.output', new StreamOutput(fopen('php://memory', '+w')));
+        if(is_null($this->container)){
+            $container = (new ContainerFactory($config))->getContainer();
+            $container->set('console.input', new StringInput(''));
+            $container->set('console.output', new StreamOutput(fopen('php://memory', '+w')));
 
-        $this->container = $container;
+            $this->container = $container;
+        }
     }
 
     /**
