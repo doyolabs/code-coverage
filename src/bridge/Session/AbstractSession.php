@@ -72,6 +72,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         'testCase',
     ];
 
+    private $started = false;
+
     /**
      * AbstractSession constructor.
      *
@@ -94,6 +96,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $this->config = $config;
         $this->createContainer($config);
         $this->processor = $this->container->get('factory')->createProcessor(true);
+        $this->reset();
         $this->save();
     }
 
@@ -131,7 +134,10 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $adapter = $this->adapter;
 
         $cached = $adapter->getItem(static::CACHE_KEY)->get();
-        $this->fromCache($cached);
+
+        if(!is_null($cached)){
+            $this->fromCache($cached);
+        }
 
         $this->createContainer($this->config);
     }
@@ -153,11 +159,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         return $data;
     }
 
-    private function fromCache($cache)
+    private function fromCache(array $cache)
     {
-        if (null === $cache) {
-            return;
-        }
         foreach ($cache as $name => $value) {
             $this->{$name} = $value;
         }
@@ -219,22 +222,36 @@ abstract class AbstractSession implements SessionInterface, \Serializable
             $container = $this->container;
             $testCase  = $this->testCase;
             $processor = $container->get('factory')->createProcessor();
-            $processor->setCurrentTestCase($testCase);
+
+            $processor->start($testCase);
+
             $this->currentProcessor = $processor;
+            $this->started = true;
         } catch (\Exception $exception) {
-            $this->addException($exception);
+            $this->started = false;
+            $message = sprintf(
+                "Can not start coverage on session %s. Error message:\n%s",
+                $this->getName(),
+                $exception->getMessage()
+            );
+            throw new SessionException($message);
         }
     }
 
     public function stop()
     {
-        $this->currentProcessor->stop();
-        $this->processor->merge($this->currentProcessor);
+        try{
+            $this->currentProcessor->stop();
+            $this->processor->merge($this->currentProcessor);
+            $this->started = false;
+        }catch (\Exception $exception){
+            $this->addException($exception);
+        }
     }
 
     public function shutdown()
     {
-        if (null !== $this->currentProcessor) {
+        if ($this->started) {
             $this->stop();
         }
         $this->save();
