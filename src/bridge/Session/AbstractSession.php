@@ -215,7 +215,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     public function start()
     {
         if (null === $this->testCase) {
-            throw new SessionException('Can not start coverage without null TestCase');
+            throw new SessionException('Can not start coverage with null TestCase');
         }
 
         try {

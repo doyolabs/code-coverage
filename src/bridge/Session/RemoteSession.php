@@ -26,31 +26,24 @@ class RemoteSession extends AbstractSession
             return false;
         }
 
-        $name    = $_SERVER[static::HEADER_SESSION_KEY];
-        $session = new static($name);
-
-        if (isset($_SERVER[static::HEADER_TEST_CASE_KEY])) {
-            $session->doStartSession();
-        } else {
+        if(!isset($_SERVER[static::HEADER_TEST_CASE_KEY])){
             return false;
         }
-        $session->save();
 
-        return true;
-    }
+        $sessionName = $_SERVER[static::HEADER_SESSION_KEY];
+        $session = new static($sessionName);
+        $testCaseName = $_SERVER[static::HEADER_TEST_CASE_KEY];
+        $testCase = new TestCase($testCaseName);
 
-    public function doStartSession()
-    {
-        $name     = $_SERVER[static::HEADER_TEST_CASE_KEY];
-        $testCase = new TestCase($name);
-        $this->setTestCase($testCase);
-
-        try {
-            $this->start();
-            register_shutdown_function([$this, 'shutdown']);
-        } catch (\Exception $e) {
-            $this->reset();
-            $this->exceptions[] = $e;
+        try{
+            $session->setTestCase($testCase);
+            $session->start();
+            $session->save();
+            return true;
+        }catch (\Exception $e){
+            $session->addException($e);
+            $session->save();
+            return false;
         }
     }
 }
