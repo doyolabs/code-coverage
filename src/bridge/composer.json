@@ -42,6 +42,7 @@
     },
     "require-dev": {
         "behat/behat": "^3.5",
+        "behat/mink-goutte-driver": "^1.2",
         "behatch/contexts": "^3.2",
         "doyo/behat-code-coverage": "^1.0@dev",
         "doyo/phpspec-code-coverage": "^1.0@dev",
