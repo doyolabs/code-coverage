@@ -183,7 +183,9 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $this->testCase   = null;
         $this->exceptions = [];
 
-        //$this->processor->clear();
+        if($this->processor instanceof ProcessorInterface){
+            $this->processor->clear();
+        }
     }
 
     public function hasExceptions()
@@ -227,8 +229,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
             $class = $container->getParameter('coverage.driver.class');
             $coverage = new CodeCoverage(new $class, $filter);
             $processor = new Processor($coverage);
-            $processor->start($testCase);
 
+            $processor->start($testCase);
             $this->currentProcessor = $processor;
             $this->started = true;
         } catch (\Exception $exception) {

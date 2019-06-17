@@ -32,5 +32,7 @@ Feature: Local Session
   Scenario: Run code coverage with local session enabled
     When I run behat
     Then I should see console output "1 scenario (1 passed)"
-    Then I should see console output "4 steps (4 passed)"
-    And I should see console output "test"
+    And I should see console output "4 steps (4 passed)"
+    When I read coverage report "build/local.cov"
+    Then file "src/Foo.php" line 11 should be covered
+

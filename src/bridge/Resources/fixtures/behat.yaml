@@ -17,3 +17,5 @@ default:
                 - src
             sessions:
                 local: ~
+            reports:
+                php: build/local.cov

@@ -13,17 +13,26 @@ declare(strict_types=1);
 
 namespace Spec\Doyo\Bridge\CodeCoverage\Session;
 
+use Doyo\Bridge\CodeCoverage\Driver\Dummy;
 use Doyo\Bridge\CodeCoverage\Exception\SessionException;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\Session\AbstractSession;
 use Doyo\Bridge\CodeCoverage\TestCase;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Filter;
 
 class AbstractSessionSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(
+        ProcessorInterface $processor,
+        Dummy $driver
+    )
     {
+        $filter = new Filter();
+        $coverage = new CodeCoverage($driver->getWrappedObject(), $filter);
+        $processor->getCodeCoverage()->willReturn($coverage);
         $this->beAnInstanceOf(TestSession::class);
         $this->beConstructedWith('abstract');
     }
@@ -67,6 +76,8 @@ class AbstractSessionSpec extends ObjectBehavior
 
     public function its_start_throw_exception_when_TestCase_is_null()
     {
+        $this->reset();
+        $this->save();
         $this->shouldThrow(SessionException::class)
             ->during('start');
     }

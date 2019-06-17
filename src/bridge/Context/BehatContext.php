@@ -39,6 +39,9 @@ class BehatContext implements Context
     public function beforeScenario(BeforeScenarioScope $scope)
     {
         $this->consoleContext = $scope->getEnvironment()->getContext(ConsoleContext::class);
+
+        $coverageContext = $scope->getEnvironment()->getContext(CoverageContext::class);
+        $coverageContext->setWorkingDir($this->cwd);
     }
 
     /**
@@ -71,13 +74,17 @@ class BehatContext implements Context
         $configFile = $this->configFile;
         $cwd = realpath($this->cwd);
 
-        $commands = [
-            $phpdbg,
-            '-qrr',
+        $phpdbg = [$phpdbg, '-qrr'];
+        if(extension_loaded('xdebug')){
+            $phpdbg = [];
+        }
+
+
+        $commands = array_merge($phpdbg,[
             $cmd,
             '--config='.$configFile,
             '--coverage'
-        ];
+        ]);
 
         $commands = array_merge($commands, $options);
         $this->consoleContext->run($commands, $cwd);

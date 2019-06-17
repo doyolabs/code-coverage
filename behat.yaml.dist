@@ -3,8 +3,8 @@ default:
         default:
             paths:
                 - '%paths.base%/src/bridge/Resources/features'
-                - '%paths.base%/src/phpspec/Resources/features'
                 - '%paths.base%/src/behat/Resources/features'
+                - '%paths.base%/src/phpspec/Resources/features'
             contexts:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
                 - Doyo\Bridge\CodeCoverage\Context\CoverageContext

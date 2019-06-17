@@ -13,6 +13,7 @@ class LocalSessionSpec extends ObjectBehavior
     {
         $this->beConstructedWith('spec-local');
         $this->init(['env' => 'spec', 'debug' => true]);
+        $this->reset();
     }
 
     function it_is_initializable()
