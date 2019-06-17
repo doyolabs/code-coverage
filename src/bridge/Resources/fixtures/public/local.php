@@ -12,7 +12,7 @@ LocalSession::startSession('console');
 LocalSession::startSession('local');
 
 $response = new JsonResponse([
-    'foo' => Foo::say()
+    'foo' => (new Foo())->say()
 ]);
 
 $response->send();

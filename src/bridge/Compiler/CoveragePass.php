@@ -40,7 +40,8 @@ class CoveragePass implements CompilerPassInterface
 
     private function processFilter(ContainerBuilder $container)
     {
-        $config     = $container->getParameter('config.filter');
+        $config     = $container->getParameter('config');
+        $config = $config['filter'];
         $definition = $container->getDefinition('coverage.filter');
 
         foreach ($config as $options) {

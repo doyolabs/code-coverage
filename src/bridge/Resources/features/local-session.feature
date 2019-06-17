@@ -19,6 +19,8 @@ Feature: Local Session
                           goutte: ~
               Behatch\Extension: ~
               Doyo\Behat\CodeCoverage\Extension:
+                  env: dev
+                  debug: true
                   filter:
                       - src
                   sessions:

@@ -6,7 +6,7 @@ namespace Doyo\Behat\CodeCoverage\Resources\fixtures\src;
 
 class Foo
 {
-    public static function say()
+    public function say()
     {
         return 'Foo Bar';
     }

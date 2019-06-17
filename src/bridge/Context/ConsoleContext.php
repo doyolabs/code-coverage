@@ -23,8 +23,8 @@ class ConsoleContext implements Context
     public function run($commands, $cwd)
     {
         $process = new Process($commands,$cwd);
+        $process->setTimeout(0);
         $process->run();
-
         if(0 === $process->getExitCode()){
             $this->output = (string)$process->getOutput();
         }else{

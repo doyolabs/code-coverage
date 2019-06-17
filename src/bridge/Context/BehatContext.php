@@ -66,11 +66,14 @@ class BehatContext implements Context
     public function iRunBehat(array $options = [], $cwd = null)
     {
         $finder = new ExecutableFinder();
+        $phpdbg = $finder->find('phpdbg');
         $cmd = realpath(__DIR__.'/../Resources/fixtures/bin/behat');
         $configFile = $this->configFile;
         $cwd = realpath($this->cwd);
 
         $commands = [
+            $phpdbg,
+            '-qrr',
             $cmd,
             '--config='.$configFile,
             '--coverage'

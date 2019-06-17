@@ -15,9 +15,11 @@ namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ContainerFactory;
 use Doyo\Bridge\CodeCoverage\Exception\SessionException;
+use Doyo\Bridge\CodeCoverage\Processor;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 abstract class AbstractSession implements SessionInterface, \Serializable
@@ -96,7 +98,6 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $this->config = $config;
         $this->createContainer($config);
         $this->processor = $this->container->get('factory')->createProcessor(true);
-        $this->reset();
         $this->save();
     }
 
@@ -138,8 +139,9 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         if(!is_null($cached)){
             $this->fromCache($cached);
         }
-
-        $this->createContainer($this->config);
+        if(!empty($this->config)){
+            $this->createContainer($this->config);
+        }
     }
 
     private function createContainer($config)
@@ -181,7 +183,7 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $this->testCase   = null;
         $this->exceptions = [];
 
-        $this->processor->clear();
+        //$this->processor->clear();
     }
 
     public function hasExceptions()
@@ -221,8 +223,10 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         try {
             $container = $this->container;
             $testCase  = $this->testCase;
-            $processor = $container->get('factory')->createProcessor();
-
+            $filter = $this->getProcessor()->getCodeCoverage()->filter();
+            $class = $container->getParameter('coverage.driver.class');
+            $coverage = new CodeCoverage(new $class, $filter);
+            $processor = new Processor($coverage);
             $processor->start($testCase);
 
             $this->currentProcessor = $processor;
