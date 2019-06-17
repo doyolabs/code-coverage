@@ -29,6 +29,7 @@ Feature: Local Session
                       php: build/local.cov
       """
 
+  @coverage
   Scenario: Run code coverage with local session enabled
     When I run behat
     Then I should see console output "1 scenario (1 passed)"
