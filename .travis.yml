@@ -57,5 +57,8 @@ before_install:
 install:
   - *update-project-dependencies
 
+before_script:
+  - *start-php-server
+
 script:
   - *run-test
