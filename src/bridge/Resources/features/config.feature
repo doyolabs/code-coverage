@@ -19,12 +19,12 @@ Feature: Configuration
     Given I have load container with:
       """
       reports:
-        clover: build/clover.xml
-        crap4j: build/logs/crap4j.xml
-        html: build/html
-        php: build/cov/php.cov
+        clover: build/behat-test/clover.xml
+        crap4j: build/behat-test/logs/crap4j.xml
+        html: build/behat-test/html
+        php: build/behat-test/cov/php.cov
         text: console
-        xml: build/xml
+        xml: build/behat-test/xml
       """
     Then service "<processor>" should loaded
 

@@ -3,12 +3,16 @@ default:
         default:
             paths:
                 - '%paths.base%/src/bridge/Resources/features'
+                - '%paths.base%/src/behat/Resources/features'
                 - '%paths.base%/src/phpspec/Resources/features'
             contexts:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
                 - Doyo\Bridge\CodeCoverage\Context\CoverageContext
                 - Doyo\PhpSpec\CodeCoverage\Context\ApplicationContext
                 - Doyo\PhpSpec\CodeCoverage\Context\FilesystemContext
+                - Doyo\Bridge\CodeCoverage\Context\BehatContext:
+                    cwd: '%paths.base%/src/bridge/Resources/fixtures'
+                - Doyo\Bridge\CodeCoverage\Context\ConsoleContext
 
     extensions:
         Doyo\Behat\CodeCoverage\Extension:

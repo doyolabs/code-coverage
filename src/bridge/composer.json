@@ -37,13 +37,16 @@
         "php": ">=7.0",
         "psr/http-message": "^1.0",
         "symfony/cache": "^3.4 | ^4.0",
+        "symfony/console": "^3.4 | ^4.0",
         "symfony/http-foundation": "^3.4 | ^4.0"
     },
     "require-dev": {
         "behat/behat": "^3.5",
+        "behatch/contexts": "^3.2",
         "doyo/behat-code-coverage": "^1.0@dev",
         "doyo/phpspec-code-coverage": "^1.0@dev",
         "phpspec/phpspec": "^4.3 | ^5.0",
-        "phpunit/phpcov": "^4.0 | >=5.0"
+        "phpunit/phpcov": "^4.0 | >=5.0",
+        "symfony/process": "^3.4 | ^4.0"
     }
 }

@@ -15,9 +15,11 @@ namespace Doyo\Bridge\CodeCoverage\Session;
 
 use Doyo\Bridge\CodeCoverage\ContainerFactory;
 use Doyo\Bridge\CodeCoverage\Exception\SessionException;
+use Doyo\Bridge\CodeCoverage\Processor;
 use Doyo\Bridge\CodeCoverage\ProcessorInterface;
 use Doyo\Bridge\CodeCoverage\TestCase;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 abstract class AbstractSession implements SessionInterface, \Serializable
@@ -71,6 +73,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         'config',
         'testCase',
     ];
+
+    private $started = false;
 
     /**
      * AbstractSession constructor.
@@ -131,9 +135,13 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $adapter = $this->adapter;
 
         $cached = $adapter->getItem(static::CACHE_KEY)->get();
-        $this->fromCache($cached);
 
-        $this->createContainer($this->config);
+        if(!is_null($cached)){
+            $this->fromCache($cached);
+        }
+        if(!empty($this->config)){
+            $this->createContainer($this->config);
+        }
     }
 
     private function createContainer($config)
@@ -153,11 +161,8 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         return $data;
     }
 
-    private function fromCache($cache)
+    private function fromCache(array $cache)
     {
-        if (null === $cache) {
-            return;
-        }
         foreach ($cache as $name => $value) {
             $this->{$name} = $value;
         }
@@ -178,7 +183,9 @@ abstract class AbstractSession implements SessionInterface, \Serializable
         $this->testCase   = null;
         $this->exceptions = [];
 
-        $this->processor->clear();
+        if($this->processor instanceof ProcessorInterface){
+            $this->processor->clear();
+        }
     }
 
     public function hasExceptions()
@@ -212,29 +219,52 @@ abstract class AbstractSession implements SessionInterface, \Serializable
     public function start()
     {
         if (null === $this->testCase) {
-            throw new SessionException('Can not start coverage without null TestCase');
+            throw new SessionException('Can not start coverage with null TestCase');
         }
 
         try {
             $container = $this->container;
             $testCase  = $this->testCase;
-            $processor = $container->get('factory')->createProcessor();
-            $processor->setCurrentTestCase($testCase);
+            $filter = $this->getProcessor()->getCodeCoverage()->filter();
+            $class = $container->getParameter('coverage.driver.class');
+            $coverage = new CodeCoverage(new $class, $filter);
+            $processor = new Processor($coverage);
+
+            $processor->start($testCase);
             $this->currentProcessor = $processor;
+            $this->started = true;
         } catch (\Exception $exception) {
+            $this->started = false;
+            $message = sprintf(
+                "Can not start coverage on session %s. Error message:\n%s",
+                $this->getName(),
+                $exception->getMessage()
+            );
+            $exception = new  SessionException($message);
             $this->addException($exception);
         }
     }
 
     public function stop()
     {
-        $this->currentProcessor->stop();
-        $this->processor->merge($this->currentProcessor);
+        try{
+            $this->currentProcessor->stop();
+            $this->processor->merge($this->currentProcessor);
+            $this->started = false;
+        }catch (\Exception $exception){
+            $message = sprintf(
+                "Can not stop coverage on session <comment>%s</comment>. Error message:\n<error>%s</error>",
+                $this->name,
+                $exception->getMessage()
+            );
+            $e = new SessionException($message);
+            $this->addException($e);
+        }
     }
 
     public function shutdown()
     {
-        if (null !== $this->currentProcessor) {
+        if ($this->started) {
             $this->stop();
         }
         $this->save();

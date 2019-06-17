@@ -15,6 +15,7 @@ namespace Doyo\Bridge\CodeCoverage;
 
 use Doyo\Bridge\CodeCoverage\Compiler\CoveragePass;
 use Doyo\Bridge\CodeCoverage\Compiler\ReportPass;
+use Doyo\Bridge\CodeCoverage\Compiler\SessionPass;
 use Doyo\Bridge\CodeCoverage\Console\Application;
 use Doyo\Bridge\CodeCoverage\DependencyInjection\CodeCoverageExtension;
 use Symfony\Component\Config\ConfigCache;
@@ -38,6 +39,7 @@ class ContainerFactory
     public function __construct(array $config = [])
     {
         $this->config = $config;
+        $this->doCreateContainer();
     }
 
     /**
@@ -45,10 +47,6 @@ class ContainerFactory
      */
     public function getContainer(): ContainerInterface
     {
-        if (null === $this->container) {
-            $this->doCreateContainer();
-        }
-
         return $this->container;
     }
 
@@ -119,6 +117,7 @@ class ContainerFactory
 
             $builder->addCompilerPass(new CoveragePass());
             $builder->addCompilerPass(new ReportPass());
+            $builder->addCompilerPass(new SessionPass());
             $builder->compile(true);
 
             $dumper = new PhpDumper($builder);
@@ -143,7 +142,11 @@ class ContainerFactory
     {
         $configs = [];
         foreach ($configuration['imports'] as $file) {
-            $configs[] = $this->importFile($file);
+            if(false !== ($file = realpath($file))){
+                $configs[] = $this->importFile($file);
+            }else{
+                throw new \RuntimeException('Import file: '.$file.' is not exists or readable.');
+            }
         }
 
         return $configs;

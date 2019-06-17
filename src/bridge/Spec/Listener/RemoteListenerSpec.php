@@ -110,7 +110,7 @@ class RemoteListenerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willThrow($e);
 
-        $consoleIO->coverageInfo('some error')->shouldBeCalledOnce();
+        $consoleIO->coverageInfo(Argument::any())->shouldBeCalled();
 
         $this->refresh();
         $this->complete($event);

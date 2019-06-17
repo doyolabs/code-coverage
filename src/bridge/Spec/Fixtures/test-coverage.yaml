@@ -1,0 +1,3 @@
+filter:
+  - file: RoboFile.php
+  - file: composer.json

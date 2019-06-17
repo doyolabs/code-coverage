@@ -8,16 +8,8 @@ suites:
 
 extensions:
     Doyo\PhpSpec\CodeCoverage\Extension:
-        filter:
-            - directory: ""
-              exclude:
-                  - Spec
-                  - Resources
-                  - Context
-                  - Driver
-                  - vendor
-                  - build
-                  - file: RoboFile.php
+        imports:
+            - Resources/coverage.yaml
         reports:
             php: build/cov/phpspec.cov
             html: build/phpspec

@@ -20,13 +20,10 @@ class LocalSession extends AbstractSession
         $self = new static($name);
         try {
             $self->start();
-            register_shutdown_function([$self, 'shutdown']);
-
             return true;
         } catch (\Exception $exception) {
             $self->addException($exception);
             $self->save();
-
             return false;
         }
     }

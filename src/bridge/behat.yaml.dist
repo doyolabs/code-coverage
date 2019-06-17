@@ -5,14 +5,17 @@ default:
                 - Resources/features
             contexts:
                 - Doyo\Bridge\CodeCoverage\Context\ContainerContext
+                - Doyo\Bridge\CodeCoverage\Context\CoverageContext
+                - Doyo\Bridge\CodeCoverage\Context\ConsoleContext
+                - Doyo\Bridge\CodeCoverage\Context\BehatContext:
+                      cwd: Resources/fixtures
+
     extensions:
         Doyo\Behat\CodeCoverage\Extension:
-            filter:
-                - directory: ""
-                  exclude:
-                      - vendor
-                      - build
-                      - Spec
-                      - Resources
-                      - Context
-                      - file: RoboFile.php
+            sessions:
+                console: ~
+            imports:
+                - Resources/coverage.yaml
+            reports:
+                php: build/cov/behat.cov
+                html: build/cov/html
